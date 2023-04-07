@@ -1,0 +1,17 @@
+.order_content {
+  border-radius: 40px;
+  background-color: #1C1C21;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.order_image {
+  min-width: 120px;
+}
+
+.order_statistic {
+  align-self: center;
+}
