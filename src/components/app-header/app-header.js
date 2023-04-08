@@ -12,7 +12,7 @@ const AppHeader = () => {
   };
 
   return (
-    <header className={styles.appheader}>
+    <header className={styles.app_header}>
       <div className={styles.items}>
         <div className={`pt-4 pr-5 pb-4 pl-5 ${styles.item} ${current === 'build' ? styles.item_type_current : ''}`} onClick={togglePage('build')}>
           <BurgerIcon type={current === 'build' ? 'primary' : 'secondary'} />

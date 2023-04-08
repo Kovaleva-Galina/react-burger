@@ -3,15 +3,17 @@
   background-color: #1C1C21;
   position: relative;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   flex-direction: column;
   gap: 36px;
+  text-align: center;
 }
 
 .order_image {
   min-width: 120px;
 }
 
-.order_statistic {
+.statistic {
   align-self: center;
+
 }

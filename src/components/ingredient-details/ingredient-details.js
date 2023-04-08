@@ -1,6 +1,6 @@
 import { memo } from 'react';
-import PropTypes from 'prop-types';
 import style from './ingredient-details.module.css';
+import { ingredientType } from '../../utils/types';
 
 const IngredientDetails = ({ item }) => {
   return (
@@ -32,12 +32,5 @@ const IngredientDetails = ({ item }) => {
 export default memo(IngredientDetails);
 
 IngredientDetails.propTypes = {
-  item: PropTypes.shape({
-    image: PropTypes.string,
-    name: PropTypes.string,
-    calories: PropTypes.number,
-    proteins: PropTypes.number,
-    fat: PropTypes.number,
-    carbohydrates: PropTypes.number,
-  }),
+  item: ingredientType,
 }

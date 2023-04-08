@@ -1,4 +1,4 @@
-.App {
+.app {
   text-align: center;
   overflow: hidden;
   box-sizing: border-box;
@@ -6,7 +6,7 @@
   width: 100vw;
 }
 
-.Appmenu {
+.app_menu {
   text-align: center;
   display: flex;
   gap: 40px;
@@ -15,22 +15,22 @@
   height: calc(100% - 88px - 40px);
 }
 
-.App-logo {
+.app_logo {
   height: 40vmin;
   pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
+  .app_logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
 
-.App-link {
+.app_link {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
+@keyframes app_logo_spin {
   from {
     transform: rotate(0deg);
   }

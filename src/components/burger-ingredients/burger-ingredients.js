@@ -1,11 +1,12 @@
 import React from 'react';
 import { memo } from 'react';
 import PropTypes from 'prop-types';
-import style from './burger-ingredients.module.css';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import style from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import { ingredientType } from '../../utils/types';
 
 const BurgerIngredients = ({ posittions }) => {
   const [current, setCurrent] = React.useState('Булки')
@@ -16,7 +17,7 @@ const BurgerIngredients = ({ posittions }) => {
 
   return (
     <section className={style.burger_ingredients}>
-      <p className="text text_type_main-large" style={{ paddingBottom: '20px' }}>
+      <p className="text text_type_main-large pb-5">
         Соберите бургер
       </p>
 
@@ -64,12 +65,6 @@ export default memo(BurgerIngredients);
 
 BurgerIngredients.propTypes = {
   posittions: PropTypes.arrayOf(
-    PropTypes.shape({
-      image: PropTypes.string,
-      price: PropTypes.number,
-      name: PropTypes.string,
-      _id: PropTypes.string.isRequired,
-      type: PropTypes.oneOf(['bun', 'sauce', 'main']),
-    })
+    ingredientType,
   )
 }

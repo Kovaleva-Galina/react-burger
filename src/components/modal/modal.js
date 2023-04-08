@@ -42,4 +42,6 @@ export default memo(Modal);
 
 Modal.propTypes = {
   onClose: PropTypes.func,
+  children: PropTypes.element,
+  header: PropTypes.string,
 }

@@ -4,6 +4,7 @@ import style from './burger-constructor.module.css';
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
+import { ingredientType } from '../../utils/types';
 
 const calcSum = (bread, filling) => {
   let sum = 0;
@@ -32,7 +33,7 @@ const BurgerConstructor = ({ posittions }) => {
         <div className="pl-9">
           <ConstructorElement
             isLocked={true}
-            text={bread.name}
+            text={bread.name + " (верх)"}
             type="top"
             price={bread.price}
             thumbnail={bread.image}
@@ -58,7 +59,7 @@ const BurgerConstructor = ({ posittions }) => {
         <div className="pl-9 pb-6">
           <ConstructorElement
             isLocked={true}
-            text={bread.name}
+            text={bread.name + " (низ)"}
             type="bottom"
             price={bread.price}
             thumbnail={bread.image}
@@ -83,13 +84,6 @@ export default BurgerConstructor;
 
 BurgerConstructor.propTypes = {
   posittions: PropTypes.arrayOf(
-    PropTypes.shape({
-      image: PropTypes.string,
-      price: PropTypes.number,
-      name: PropTypes.string,
-      _id: PropTypes.string.isRequired,
-      type: PropTypes.oneOf(['bun', 'sauce', 'main']),
-
-    })
+    ingredientType,
   )
 }

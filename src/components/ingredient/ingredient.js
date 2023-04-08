@@ -2,6 +2,7 @@ import { memo } from 'react';
 import PropTypes from 'prop-types';
 import style from './ingredient.module.css';
 import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ingredientType } from '../../utils/types';
 
 const Ingredient = ({ item, onClick = () => { } }) => {
   return (
@@ -21,10 +22,6 @@ const Ingredient = ({ item, onClick = () => { } }) => {
 export default memo(Ingredient);
 
 Ingredient.propTypes = {
-  item: PropTypes.shape({
-    image: PropTypes.string,
-    price: PropTypes.number,
-    name: PropTypes.string,
-  }),
+  item: ingredientType,
   onClick: PropTypes.func,
 }
