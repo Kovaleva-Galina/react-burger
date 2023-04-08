@@ -1,4 +1,4 @@
-import graphics from '../images/graphics.svg';
+import graphics from '../../images/graphics.svg';
 import style from './order-details.module.css';
 
 const OrderDetails = () => {
