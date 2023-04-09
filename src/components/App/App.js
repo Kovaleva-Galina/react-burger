@@ -26,13 +26,13 @@ function App() {
 
 
   return (
-    <main className={`p-10 ${style.app}`} >
+    <div className={`p-10 ${style.app}`} >
       <AppHeader className={style.app_header} />
-      <div className={`p-10 ${style.app_menu}`}>
+      <main className={`p-10 ${style.app_menu}`}>
         <BurgerIngredients posittions={posittions} />
         <BurgerConstructor posittions={posittions} />
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }
 
