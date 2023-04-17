@@ -1,0 +1,56 @@
+.burger_constructor {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
+  align-items: flex-start;
+}
+
+.info {
+  display: flex;
+  gap: 41.5px;
+  justify-content: flex-end;
+}
+
+.content {
+  width: 98%;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.list {
+  list-style: none;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 0;
+  gap: 16px;
+  overflow-y: scroll;
+}
+
+.price {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  min-width: 536px;
+  justify-content: flex-end;
+}
+
+.sum {
+  display: flex;
+  align-items: center;
+  gap: 9.5px;
+}
+
+.list::-webkit-scrollbar {
+  height: 12px;
+  width: 8px;
+}
+
+.list::-webkit-scrollbar-track {
+  background: #2F2F37;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background-color: var(--text-inactive-color);
+}
