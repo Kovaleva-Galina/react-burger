@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState, useContext } from 'react';
 import { memo } from 'react';
 import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -7,13 +7,17 @@ import Ingredient from '../ingredient/ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import { ingredientType } from '../../utils/types';
+import { Context } from '../context/context';
 
-const BurgerIngredients = ({ posittions }) => {
-  const [current, setCurrent] = React.useState('Булки')
+const BurgerIngredients = () => {
+  const [current, setCurrent] = useState('Булки');
+  
+  const posittions = useContext(Context);
+
   const breads = posittions.filter((item) => item.type === 'bun');
   const sauce = posittions.filter((item) => item.type === 'sauce');
   const main = posittions.filter((item) => item.type === 'main');
-  const [modalActive, setModalActive] = React.useState(null);
+  const [modalActive, setModalActive] = useState(null);
 
   return (
     <section className={style.burger_ingredients}>
