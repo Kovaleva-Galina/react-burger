@@ -19,6 +19,10 @@
   gap: 13px;
 }
 
+.content__extrime {
+  width: 91%;
+}
+
 .list {
   list-style: none;
   flex-wrap: wrap;

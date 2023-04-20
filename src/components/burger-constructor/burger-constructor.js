@@ -1,10 +1,8 @@
-import { React, useContext, useState } from 'react';
-import PropTypes from 'prop-types';
+import { useContext, useState } from 'react';
 import style from './burger-constructor.module.css';
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
-import { ingredientType } from '../../utils/types';
 import { Context } from '../context/context';
 
 const calcKeys = (bread, filling) => {
@@ -44,7 +42,6 @@ const BurgerConstructor = () => {
   const [modalActive, setModalActive] = useState(null);
 
   const [orderNumber, setOrderDetails] = useState(null);
-  console.log('keysNumbers',keysNumbers)
 
   const generateOrderNumber = () => {
     return fetch('https://norma.nomoreparties.space/api/orders', {
@@ -64,7 +61,6 @@ const BurgerConstructor = () => {
   })
       .then((response) => {
         setOrderDetails(response.order.number);
-        console.log(response.order.number);
       })
       .catch((error) => {
         console.log('Error: ', error)
@@ -80,7 +76,7 @@ const BurgerConstructor = () => {
   return (
     <section className={`p-5 mt-10 mb-8 ${style.burger_constructor}`}>
       {!!bread && (
-        <div className="pl-9">
+        <div className={`pl-9 ${style.content__extrime}`}>
           <ConstructorElement
             isLocked={true}
             text={bread.name + " (верх)"}
@@ -95,7 +91,7 @@ const BurgerConstructor = () => {
       <ul className={style.list}>
         {filling.map(function (item) {
           return (
-            <li className={`pb-4 ${style.context}`} key={item._id}>
+            <li key={item._id} className={`pb-4 ${style.content}`}>
               <DragIcon type="primary" />
               <ConstructorElement
                 text={item.name}
@@ -132,9 +128,3 @@ const BurgerConstructor = () => {
 }
 
 export default BurgerConstructor;
-
-BurgerConstructor.propTypes = {
-  posittions: PropTypes.arrayOf(
-    ingredientType,
-  )
-}

@@ -1,12 +1,10 @@
-import { React, useState, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { memo } from 'react';
-import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { ingredientType } from '../../utils/types';
 import { Context } from '../context/context';
 
 const BurgerIngredients = () => {
@@ -66,9 +64,3 @@ const BurgerIngredients = () => {
 }
 
 export default memo(BurgerIngredients);
-
-BurgerIngredients.propTypes = {
-  posittions: PropTypes.arrayOf(
-    ingredientType,
-  )
-}

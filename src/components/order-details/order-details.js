@@ -1,6 +1,6 @@
 import graphics from '../../images/graphics.svg';
 import style from './order-details.module.css';
-
+import PropTypes from 'prop-types';
 
 const OrderDetails = ({orderNumber}) => {
 
@@ -18,3 +18,7 @@ const OrderDetails = ({orderNumber}) => {
 }
 
 export default OrderDetails;
+
+OrderDetails.propTypes = {
+  orderNumber: PropTypes.arrayOf(PropTypes.number),
+}
