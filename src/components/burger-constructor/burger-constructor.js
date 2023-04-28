@@ -1,75 +1,41 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useMemo } from 'react';
 import style from './burger-constructor.module.css';
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
 import { Context } from '../context/context';
-
-const calcKeys = (bread, filling) => {
-  let keysNumbers = [];
-
-  if (bread) {
-    keysNumbers.push(bread._id);
-  }
-
-  filling.forEach((item) => {
-    keysNumbers.push(item._id);
-  })
-  return keysNumbers;
-}
-
-const calcSum = (bread, filling) => {
-  let sum = 0;
-
-  if (bread) {
-    sum = bread.price * 2;
-  }
-
-  filling.forEach((item) => {
-    sum += item.price;
-  })
-  return sum;
-}
+import { calcKeys, calcSum } from './burger-constructor.utils';
+import { fetchOrderNumber } from '../../utils/api';
 
 const BurgerConstructor = () => {
   const posittions = useContext(Context);
-  const bread = posittions.find((el) => el.type === 'bun');
-  const filling = posittions.filter((item) => {
-    return item.type !== "bun" && item.type !== "top" && item.type !== "bottom"
-  });
-  const sum = calcSum(bread, filling);
-  const keysNumbers = calcKeys(bread, filling)
-  const [modalActive, setModalActive] = useState(null);
+  const bread = useMemo(() => posittions.find((el) => el.type === 'bun'), [posittions])
 
-  const [orderNumber, setOrderDetails] = useState(null);
-
-  const generateOrderNumber = () => {
-    return fetch('https://norma.nomoreparties.space/api/orders', {
-      method: 'POST',
-      body: JSON.stringify({
-        ingredients: keysNumbers
+  const filling = useMemo(
+    () =>
+    posittions.filter((item) => {
+      return item.type !== "bun" && item.type !== "top" && item.type !== "bottom"
       }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }) 
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка ${res.status}`);
-  })
-      .then((response) => {
-        setOrderDetails(response.order.number);
-      })
-      .catch((error) => {
-        console.log('Error: ', error)
-      });
-  };
+    [posittions]
+  );
+
+  const sum = useMemo(() => {
+    return calcSum(bread, filling);
+  }, [bread, filling]);
+
+  const keysNumbers = useMemo(() => {
+    return calcKeys(bread, filling);
+  }, [bread, filling]);
+
+  const [orderNumber, setOrderNumber] = useState(null);
 
   const onCreateOrder = () => {
-    generateOrderNumber().then(() => {
-      setModalActive(true);
+    return fetchOrderNumber(keysNumbers)
+    .then((response) => {
+      setOrderNumber(response.order.number);
+    })
+    .catch((error) => {
+      console.log('Error: ', error)
     });
   };
 
@@ -86,7 +52,7 @@ const BurgerConstructor = () => {
             count={1}
           />
         </div>
-        
+
       )}
       <ul className={style.list}>
         {filling.map(function (item) {
@@ -122,7 +88,7 @@ const BurgerConstructor = () => {
         <Button htmlType="button" onClick={onCreateOrder}>Оформить заказ</Button>
 
       </div>
-      {!!modalActive && <Modal onClose={() => setModalActive(false)} ><OrderDetails orderNumber={orderNumber}/></Modal>}
+      {!!orderNumber && <Modal onClose={() => setOrderNumber(null)} ><OrderDetails orderNumber={orderNumber}/></Modal>}
     </section>
   )
 }

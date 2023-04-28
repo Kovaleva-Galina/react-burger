@@ -8,8 +8,8 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import { Context } from '../context/context';
 
 const BurgerIngredients = () => {
-  const [current, setCurrent] = useState('Булки');
-  
+  const [current, setCurrent] = useState('bun');
+
   const posittions = useContext(Context);
 
   const breads = posittions.filter((item) => item.type === 'bun');
@@ -24,13 +24,13 @@ const BurgerIngredients = () => {
       </p>
 
       <div className={`pb-10 ${style.menu}`}>
-        <Tab value="Булки" active={current === 'Булки'} onClick={setCurrent}>
+        <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
           Булки
         </Tab>
-        <Tab value="Соусы" active={current === 'Соусы'} onClick={setCurrent}>
+        <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
           Соусы
         </Tab>
-        <Tab value="Начинки" active={current === 'Начинки'} onClick={setCurrent}>
+        <Tab value="main" active={current === 'main'} onClick={setCurrent}>
           Начинки
         </Tab>
       </div>

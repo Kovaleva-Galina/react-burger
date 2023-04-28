@@ -4,18 +4,13 @@ import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { Context } from '../context/context';
+import { fetchIngredients } from '../../utils/api';
 
 function App() {
   const [posittions, setComponents] = useState([]);
 
   useEffect(() => {
-    fetch('https://norma.nomoreparties.space/api/ingredients')
-    .then(res => {
-      if (res.ok) {
-          return res.json();
-      }
-      return Promise.reject(`Ошибка ${res.status}`);
-  })
+      fetchIngredients()
       .then((post) => {
         setComponents(post.data);
       })
@@ -23,7 +18,6 @@ function App() {
         console.log('Error: ', error)
       });
   }, []);
-
 
 
   return (
