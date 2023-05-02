@@ -1,20 +1,16 @@
-import React from 'react';// импорт библиотеки
+import { React, useState, useEffect} from 'react';// импорт библиотеки
 import style from './app.module.css';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
+import { Context } from '../context/context';
+import { fetchIngredients } from '../../utils/api';
 
 function App() {
-  const [posittions, setComponents] = React.useState([]);
+  const [posittions, setComponents] = useState([]);
 
-  React.useEffect(() => {
-    fetch('https://norma.nomoreparties.space/api/ingredients')
-    .then(res => {
-      if (res.ok) {
-          return res.json();
-      }
-      return Promise.reject(`Ошибка ${res.status}`);
-  })
+  useEffect(() => {
+      fetchIngredients()
       .then((post) => {
         setComponents(post.data);
       })
@@ -24,15 +20,14 @@ function App() {
   }, []);
 
 
-
   return (
-    <div className={`p-10 ${style.app}`} >
-      <AppHeader className={style.app_header} />
-      <main className={`p-10 ${style.app_menu}`}>
-        <BurgerIngredients posittions={posittions} />
-        <BurgerConstructor posittions={posittions} />
-      </main>
-    </div>
+    <Context.Provider value={posittions} className={`p-10 ${style.app}`} >
+        <AppHeader className={style.app_header} />
+        <main className={`p-10 ${style.app_menu}`}>
+          <BurgerIngredients />
+          <BurgerConstructor />
+        </main>
+    </Context.Provider>
   );
 }
 

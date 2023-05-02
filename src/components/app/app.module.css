@@ -12,7 +12,7 @@
   gap: 40px;
   overflow: hidden;
   justify-content: center;
-  height: calc(100% - 88px - 40px);
+  height: calc(100vh - 88px - 80px);
 }
 
 .app_logo {

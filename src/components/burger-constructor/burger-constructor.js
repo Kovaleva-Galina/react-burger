@@ -1,36 +1,48 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import { useContext, useState, useMemo } from 'react';
 import style from './burger-constructor.module.css';
 import { Button, ConstructorElement, CurrencyIcon, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import OrderDetails from '../order-details/order-details';
 import Modal from '../modal/modal';
-import { ingredientType } from '../../utils/types';
+import { Context } from '../context/context';
+import { calcKeys, calcSum } from './burger-constructor.utils';
+import { fetchOrderNumber } from '../../utils/api';
 
-const calcSum = (bread, filling) => {
-  let sum = 0;
+const BurgerConstructor = () => {
+  const posittions = useContext(Context);
+  const bread = useMemo(() => posittions.find((el) => el.type === 'bun'), [posittions])
 
-  if (bread) {
-    sum = bread.price * 2;
-  }
+  const filling = useMemo(
+    () =>
+    posittions.filter((item) => {
+      return item.type !== "bun" && item.type !== "top" && item.type !== "bottom"
+      }),
+    [posittions]
+  );
 
-  filling.forEach((item) => {
-    sum += item.price;
-  })
-  return sum;
-}
+  const sum = useMemo(() => {
+    return calcSum(bread, filling);
+  }, [bread, filling]);
 
-const BurgerConstructor = ({ posittions }) => {
-  const bread = posittions.find((el) => el.type === 'bun');
-  const filling = posittions.filter((item) => {
-    return item.type !== "bun" && item.type !== "top" && item.type !== "bottom"
-  });
-  const sum = calcSum(bread, filling);
+  const keysNumbers = useMemo(() => {
+    return calcKeys(bread, filling);
+  }, [bread, filling]);
 
-  const [modalActive, setModalActive] = React.useState(null);
+  const [orderNumber, setOrderNumber] = useState(null);
+
+  const onCreateOrder = () => {
+    return fetchOrderNumber(keysNumbers)
+    .then((response) => {
+      setOrderNumber(response.order.number);
+    })
+    .catch((error) => {
+      console.log('Error: ', error)
+    });
+  };
+
   return (
     <section className={`p-5 mt-10 mb-8 ${style.burger_constructor}`}>
       {!!bread && (
-        <div className="pl-9">
+        <div className={`pl-9 ${style.content__extrime}`}>
           <ConstructorElement
             isLocked={true}
             text={bread.name + " (верх)"}
@@ -40,11 +52,12 @@ const BurgerConstructor = ({ posittions }) => {
             count={1}
           />
         </div>
+
       )}
       <ul className={style.list}>
         {filling.map(function (item) {
           return (
-            <li className={`pb-4 ${style.content}`} key={item._id}>
+            <li key={item._id} className={`pb-4 ${style.content}`}>
               <DragIcon type="primary" />
               <ConstructorElement
                 text={item.name}
@@ -72,18 +85,12 @@ const BurgerConstructor = ({ posittions }) => {
           <p className="text text_type_digits-medium">{sum}</p>
           <CurrencyIcon className={style.icon} />
         </div>
-        <Button htmlType="button" onClick={() => setModalActive(true)}>Оформить заказ</Button>
+        <Button htmlType="button" onClick={onCreateOrder}>Оформить заказ</Button>
 
       </div>
-      {!!modalActive && <Modal onClose={() => setModalActive(false)}><OrderDetails /></Modal>}
+      {!!orderNumber && <Modal onClose={() => setOrderNumber(null)} ><OrderDetails orderNumber={orderNumber}/></Modal>}
     </section>
   )
 }
 
 export default BurgerConstructor;
-
-BurgerConstructor.propTypes = {
-  posittions: PropTypes.arrayOf(
-    ingredientType,
-  )
-}

@@ -1,19 +1,21 @@
-import React from 'react';
+import { useState, useContext } from 'react';
 import { memo } from 'react';
-import PropTypes from 'prop-types';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { ingredientType } from '../../utils/types';
+import { Context } from '../context/context';
 
-const BurgerIngredients = ({ posittions }) => {
-  const [current, setCurrent] = React.useState('Булки')
+const BurgerIngredients = () => {
+  const [current, setCurrent] = useState('bun');
+
+  const posittions = useContext(Context);
+
   const breads = posittions.filter((item) => item.type === 'bun');
   const sauce = posittions.filter((item) => item.type === 'sauce');
   const main = posittions.filter((item) => item.type === 'main');
-  const [modalActive, setModalActive] = React.useState(null);
+  const [modalActive, setModalActive] = useState(null);
 
   return (
     <section className={style.burger_ingredients}>
@@ -22,13 +24,13 @@ const BurgerIngredients = ({ posittions }) => {
       </p>
 
       <div className={`pb-10 ${style.menu}`}>
-        <Tab value="Булки" active={current === 'Булки'} onClick={setCurrent}>
+        <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
           Булки
         </Tab>
-        <Tab value="Соусы" active={current === 'Соусы'} onClick={setCurrent}>
+        <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
           Соусы
         </Tab>
-        <Tab value="Начинки" active={current === 'Начинки'} onClick={setCurrent}>
+        <Tab value="main" active={current === 'main'} onClick={setCurrent}>
           Начинки
         </Tab>
       </div>
@@ -62,9 +64,3 @@ const BurgerIngredients = ({ posittions }) => {
 }
 
 export default memo(BurgerIngredients);
-
-BurgerIngredients.propTypes = {
-  posittions: PropTypes.arrayOf(
-    ingredientType,
-  )
-}
