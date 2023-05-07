@@ -1,21 +1,48 @@
-import { useState, useContext } from 'react';
-import { memo } from 'react';
+import { useState, memo, useRef, createRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { Context } from '../context/context';
+import { deleteOneIngredient, detailIngredient } from '../../services/actions/ingredients';
 
 const BurgerIngredients = () => {
+
+  const dispatch = useDispatch();
+
   const [current, setCurrent] = useState('bun');
+  const positions = useSelector((state) => state.ingredients.items);
+  const oneIngredient = useSelector((state) => state.ingredients?.oneIngredient)
 
-  const posittions = useContext(Context);
+  const breads = positions.filter((item) => item.type === 'bun');
+  const sauce = positions.filter((item) => item.type === 'sauce');
+  const main = positions.filter((item) => item.type === 'main');
 
-  const breads = posittions.filter((item) => item.type === 'bun');
-  const sauce = posittions.filter((item) => item.type === 'sauce');
-  const main = posittions.filter((item) => item.type === 'main');
-  const [modalActive, setModalActive] = useState(null);
+  const refContainer = useRef();
+  const refTitle = useRef({ bun: createRef(), sauce: createRef(), main: createRef() });
+
+  const handleCloseModal = () => {
+    dispatch(deleteOneIngredient())
+  }
+
+  const setModalActive = (item) => {
+    dispatch(detailIngredient(item));
+  };
+
+  const handleClickTab = (newCurrent) => {
+    setCurrent(newCurrent);
+    refTitle.current?.[newCurrent]?.current?.scrollIntoView({behavior: 'smooth'});
+  }
+
+  const handleScroll = (event) => {
+    const scrollPosition = event.target.scrollTop + event.target.clientHeight / 2;
+    Object.entries(refTitle.current).forEach(([tab, ref]) => {
+      if (ref.current.offsetTop <= scrollPosition) {
+        setCurrent(tab)
+      }
+    })
+  }
 
   return (
     <section className={style.burger_ingredients}>
@@ -24,39 +51,39 @@ const BurgerIngredients = () => {
       </p>
 
       <div className={`pb-10 ${style.menu}`}>
-        <Tab value="bun" active={current === 'bun'} onClick={setCurrent}>
+        <Tab value="bun" active={current === 'bun'} onClick={handleClickTab}>
           Булки
         </Tab>
-        <Tab value="sauce" active={current === 'sauce'} onClick={setCurrent}>
+        <Tab value="sauce" active={current === 'sauce'} onClick={handleClickTab}>
           Соусы
         </Tab>
-        <Tab value="main" active={current === 'main'} onClick={setCurrent}>
+        <Tab value="main" active={current === 'main'} onClick={handleClickTab}>
           Начинки
         </Tab>
       </div>
-      <ul className={style.ingredients}>
-        <p className="text text_type_main-medium">Булки</p>
+      <ul className={style.ingredients} ref={refContainer} onScroll={handleScroll}>
+        <p className="text text_type_main-medium" ref={refTitle.current.bun} >Булки</p>
         <ul className={`pt-6 pr-4 pb-10 mb-10 ${style.list}`}>
-          {breads.map((item) => (
-            <Ingredient item={item} onClick={setModalActive} key={item._id} />
+          {breads.map((ingredient) => (
+            <Ingredient ingredient={ingredient} onClick={setModalActive} key={ingredient._id} type="bun" />
           ))}
         </ul>
-        <p className="text text_type_main-medium">Соусы</p>
+        <p className="text text_type_main-medium" ref={refTitle.current.sauce}>Соусы</p>
         <ul className={`pt-6 pr-4 pb-10 mb-10 ${style.list}`}>
-          {sauce.map((item) => (
-            <Ingredient item={item} onClick={setModalActive} key={item._id} />
+          {sauce.map((ingredient) => (
+            <Ingredient ingredient={ingredient} onClick={setModalActive} key={ingredient._id} type="ingredient" />
           ))}
         </ul>
-        <p className="text text_type_main-medium">Начинки</p>
+        <p className="text text_type_main-medium" ref={refTitle.current.main}>Начинки</p>
         <ul className={`pt-6 pr-4 pb-10 mb-10 ${style.list}`}>
-          {main.map((item) => (
-            <Ingredient item={item} onClick={setModalActive} key={item._id} />
+          {main.map((ingredient) => (
+            <Ingredient ingredient={ingredient} onClick={setModalActive} key={ingredient._id} type="ingredient" />
           ))}
         </ul>
       </ul>
-      {!!modalActive && (
-        <Modal onClose={() => setModalActive(false)} header="Детали ингредиента">
-          <IngredientDetails item={modalActive} />
+      {!!oneIngredient && (
+        <Modal onClose={handleCloseModal} header="Детали ингредиента">
+          <IngredientDetails item={oneIngredient} />
         </Modal>
       )}
     </section>

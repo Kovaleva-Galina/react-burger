@@ -1,0 +1,8 @@
+.content {
+  width: 98%;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  cursor: grab;
+}
+

@@ -1,25 +1,22 @@
-export const calcKeys = (bread, filling) => {
+export const calcKeys = (positions) => {
   let keysNumbers = [];
 
-  if (bread) {
-    keysNumbers.push(bread._id);
-  }
-
-  filling.forEach((item) => {
+  positions.forEach((item) => {
     keysNumbers.push(item._id);
   })
   return keysNumbers;
 }
 
-export const calcSum = (bread, filling) => {
+export const calcSum = (positions) => {
   let sum = 0;
 
-  if (bread) {
-    sum = bread.price * 2;
-  }
+  positions.forEach((item) => {
 
-  filling.forEach((item) => {
-    sum += item.price;
+    if ( item.type === 'bun') {
+      sum =  item.price * 2;
+    } else {
+      sum += item.price;
+    }
   })
   return sum;
 }
