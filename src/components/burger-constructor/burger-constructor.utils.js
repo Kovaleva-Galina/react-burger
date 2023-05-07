@@ -1,22 +1,11 @@
 export const calcKeys = (positions) => {
-  let keysNumbers = [];
-
-  positions.forEach((item) => {
-    keysNumbers.push(item._id);
-  })
-  return keysNumbers;
+  return positions.reduce((acc, item) => {
+    return [...acc, item._id]
+  }, []);
 }
 
 export const calcSum = (positions) => {
-  let sum = 0;
-
-  positions.forEach((item) => {
-
-    if ( item.type === 'bun') {
-      sum =  item.price * 2;
-    } else {
-      sum += item.price;
-    }
-  })
-  return sum;
+  return positions.reduce((acc, item) => {
+    return acc + item.price;
+  }, 0);
 }

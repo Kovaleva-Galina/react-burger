@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from "react-dnd";
 import style from './burger-constructor.module.css';
@@ -7,91 +7,92 @@ import OrderDetails from '../order-details/order-details';
 import Filling from '../filling/filling';
 import Modal from '../modal/modal';
 import { calcKeys, calcSum } from './burger-constructor.utils';
-import { deleteSelectedIngredient, deleteOrder, updateOrder, changeListSelectedIngredient, changeBunInSelected, addOneIngredient } from '../../services/actions/ingredients';
+import { deleteSelectedFilling, deleteOrder, updateOrder, updateSelectedFillings, updateSelectedBuns, addSelectedFilling } from '../../services/actions/ingredients';
 
 const BurgerConstructor = () => {
+  const refDropZone = useRef();
   const onDropHandlerBun =(item) => {
-    dispatch(changeBunInSelected(item));
+    dispatch(updateSelectedBuns(item));
   }
 
   const onDropHandlerFilling =(item) => {
-    dispatch(addOneIngredient(item));
+    dispatch(addSelectedFilling(item));
   }
 
-  const [, dropBunTopRef] = useDrop({
-    accept: "bun",
-    drop(itemId) {
-      onDropHandlerBun(itemId);
-    },
-  });
-
-  const [, dropBunBottomRef] = useDrop({
-    accept: "bun",
-    drop(item) {
-        onDropHandlerBun(item);
-    },
-  });
-
   const [, dropFillingsRef] = useDrop({
-    accept: "ingredient",
+    accept: "filling",
     drop(item) {
         onDropHandlerFilling(item);
     },
   });
 
-  const positions = useSelector((state) => state.ingredients.selected);
+  const [, dropBunsRef] = useDrop({
+    accept: "bun",
+    drop(item) {
+      onDropHandlerBun(item);
+    },
+  });
+
+  dropBunsRef(dropFillingsRef(refDropZone));
+
+  const selectedBuns = useSelector((state) => state.ingredients.selectedBuns);
+  const selectedFillings = useSelector((state) => state.ingredients.selectedFillings);
   const orderNumber = useSelector((state) => state.ingredients.order?.number);
   const dispatch = useDispatch();
 
   const onDelete = (item) => {
-    dispatch(deleteSelectedIngredient(item._id));
+    dispatch(deleteSelectedFilling(item._id));
   };
 
   const sum = useMemo(() => {
-    return calcSum(positions);
-  }, [positions]);
-
-  const keysNumbers = useMemo(() => {
-    return calcKeys(positions);
-  }, [positions]);
+    return calcSum([...selectedBuns, ...selectedFillings]);
+  }, [selectedBuns, selectedFillings]);
 
   const handleCloseModal = () => {
     dispatch(deleteOrder())
   }
 
   const onCreateOrder = () => {
-    dispatch(updateOrder(keysNumbers));
+    dispatch(updateOrder(calcKeys([...selectedBuns, ...selectedFillings])));
   };
 
   const onDropFilling = (dragItem, dropIndex) => {
-    const newPositions = [...positions];
+    const newPositions = [...selectedFillings];
     const currentIndex = newPositions.indexOf(dragItem);
     newPositions.splice(currentIndex, 1);
     newPositions.splice(dropIndex, 0, dragItem);
-    dispatch(changeListSelectedIngredient(newPositions));
+    dispatch(updateSelectedFillings(newPositions));
   }
-
-  const bun = useMemo(() => positions.find((item) => item.type === 'bun'), [positions]);
-  const fillings = useMemo(() => positions.filter((item) => item.type !== 'bun'), [positions]);
 
   return (
     <section className={`p-5 mt-10 mb-8 ${style.burger_constructor}`}>
-      <ul>
-        {!!bun && (
-          <li className={`pl-9 pb-4 ${style.content__extrime}`} ref={dropBunTopRef}>
+      <ul  className={style.positions_list} ref={refDropZone}>
+        {!!selectedBuns[0] && (
+          <li className={`pl-9 pb-4 ${style.content__extrime}`}>
             <ConstructorElement
               isLocked={true}
-              text={bun.name + " (верх)"}
+              text={selectedBuns[0].name + " (верх)"}
               type="top"
-              price={bun.price}
-              thumbnail={bun.image}
+              price={selectedBuns[0].price}
+              thumbnail={selectedBuns[0].image}
             />
         </li>
         )}
-        <ul className={`pt-4 ${style.list}`} ref={dropFillingsRef}>
-          {fillings.map((item, index) => (
+        {/* {!!selectedBuns[0] && (
+          <li className={`pl-9 pb-4 ${style.content__extrime}`} ref={dropBunTopRef}>
+            <ConstructorElement
+              isLocked={true}
+              text={selectedBuns[0].name + " (верх)"}
+              type="top"
+              price={selectedBuns[0].price}
+              thumbnail={selectedBuns[0].image}
+            />
+        </li>
+        )} */}
+        <ul className={`pt-4 ${style.list}`}>
+          {selectedFillings.map((item, index) => (
             <Filling
-              index={index + 1}
+              index={index}
               onDelete={onDelete}
               item={item}
               key={index}
@@ -99,14 +100,14 @@ const BurgerConstructor = () => {
             />
           ))}
         </ul>
-        {!!bun && (
-          <li className={`pl-9 pb-4 ${style.content__extrime}`} ref={dropBunBottomRef}>
+        {!!selectedBuns[1] && (
+          <li className={`pl-9 pb-4 ${style.content__extrime}`}>
             <ConstructorElement
               isLocked={true}
-              text={bun.name + " (низ)"}
+              text={selectedBuns[1].name + " (низ)"}
               type="bottom"
-              price={bun.price}
-              thumbnail={bun.image}
+              price={selectedBuns[1].price}
+              thumbnail={selectedBuns[1].image}
             />
           </li>
         )}

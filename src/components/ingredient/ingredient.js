@@ -7,7 +7,13 @@ import { Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-c
 import { ingredientType } from '../../utils/types';
 
 const Ingredient = ({ ingredient, onClick = () => { }, type }) => {
-  const count = useSelector((state) => state.ingredients.selected).filter(item =>
+  const selected = useSelector((state) => {
+    return type === 'bun'
+      ? state.ingredients.selectedBuns
+      : state.ingredients.selectedFillings;
+  })
+
+  const count = selected.filter(item =>
     item._id === ingredient._id
   )
   const [, dragRef] = useDrag({

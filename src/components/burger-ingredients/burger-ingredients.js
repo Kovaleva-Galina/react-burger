@@ -5,7 +5,7 @@ import style from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { deleteOneIngredient, detailIngredient } from '../../services/actions/ingredients';
+import { deleteDetailIngredient, updateDetailIngredient } from '../../services/actions/ingredients';
 
 const BurgerIngredients = () => {
 
@@ -13,7 +13,7 @@ const BurgerIngredients = () => {
 
   const [current, setCurrent] = useState('bun');
   const positions = useSelector((state) => state.ingredients.items);
-  const oneIngredient = useSelector((state) => state.ingredients?.oneIngredient)
+  const detailIngredient = useSelector((state) => state.ingredients?.detailIngredient)
 
   const breads = positions.filter((item) => item.type === 'bun');
   const sauce = positions.filter((item) => item.type === 'sauce');
@@ -23,11 +23,11 @@ const BurgerIngredients = () => {
   const refTitle = useRef({ bun: createRef(), sauce: createRef(), main: createRef() });
 
   const handleCloseModal = () => {
-    dispatch(deleteOneIngredient())
+    dispatch(deleteDetailIngredient())
   }
 
   const setModalActive = (item) => {
-    dispatch(detailIngredient(item));
+    dispatch(updateDetailIngredient(item));
   };
 
   const handleClickTab = (newCurrent) => {
@@ -71,19 +71,19 @@ const BurgerIngredients = () => {
         <p className="text text_type_main-medium" ref={refTitle.current.sauce}>Соусы</p>
         <ul className={`pt-6 pr-4 pb-10 mb-10 ${style.list}`}>
           {sauce.map((ingredient) => (
-            <Ingredient ingredient={ingredient} onClick={setModalActive} key={ingredient._id} type="ingredient" />
+            <Ingredient ingredient={ingredient} onClick={setModalActive} key={ingredient._id} type="filling" />
           ))}
         </ul>
         <p className="text text_type_main-medium" ref={refTitle.current.main}>Начинки</p>
         <ul className={`pt-6 pr-4 pb-10 mb-10 ${style.list}`}>
           {main.map((ingredient) => (
-            <Ingredient ingredient={ingredient} onClick={setModalActive} key={ingredient._id} type="ingredient" />
+            <Ingredient ingredient={ingredient} onClick={setModalActive} key={ingredient._id} type="filling" />
           ))}
         </ul>
       </ul>
-      {!!oneIngredient && (
+      {!!detailIngredient && (
         <Modal onClose={handleCloseModal} header="Детали ингредиента">
-          <IngredientDetails item={oneIngredient} />
+          <IngredientDetails item={detailIngredient} />
         </Modal>
       )}
     </section>
