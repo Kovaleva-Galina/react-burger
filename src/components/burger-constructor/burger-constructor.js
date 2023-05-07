@@ -7,7 +7,9 @@ import OrderDetails from '../order-details/order-details';
 import Filling from '../filling/filling';
 import Modal from '../modal/modal';
 import { calcKeys, calcSum } from './burger-constructor.utils';
-import { deleteSelectedFilling, deleteOrder, updateOrder, updateSelectedFillings, updateSelectedBuns, addSelectedFilling } from '../../services/actions/ingredients';
+import { deleteOrder, updateOrder } from '../../services/actions/order';
+import { deleteSelectedFilling, updateSelectedFillings, updateSelectedBuns, addSelectedFilling } from '../../services/actions/burger-constructor';
+
 
 const BurgerConstructor = () => {
   const refDropZone = useRef();
@@ -22,22 +24,23 @@ const BurgerConstructor = () => {
   const [, dropFillingsRef] = useDrop({
     accept: "filling",
     drop(item) {
-        onDropHandlerFilling(item);
+       onDropHandlerFilling(item);
     },
   });
 
   const [, dropBunsRef] = useDrop({
     accept: "bun",
     drop(item) {
-      onDropHandlerBun(item);
+     onDropHandlerBun(item);
     },
   });
 
   dropBunsRef(dropFillingsRef(refDropZone));
 
-  const selectedBuns = useSelector((state) => state.ingredients.selectedBuns);
-  const selectedFillings = useSelector((state) => state.ingredients.selectedFillings);
-  const orderNumber = useSelector((state) => state.ingredients.order?.number);
+  const selectedBuns = useSelector((state) => state.burgerConstructor.selectedBuns);
+  const selectedFillings = useSelector((state) => state.burgerConstructor.selectedFillings);
+  const orderNumber = useSelector((state) => state.orderNumber?.orderNumber?.number);
+
   const dispatch = useDispatch();
 
   const onDelete = (item) => {
@@ -78,17 +81,6 @@ const BurgerConstructor = () => {
             />
         </li>
         )}
-        {/* {!!selectedBuns[0] && (
-          <li className={`pl-9 pb-4 ${style.content__extrime}`} ref={dropBunTopRef}>
-            <ConstructorElement
-              isLocked={true}
-              text={selectedBuns[0].name + " (верх)"}
-              type="top"
-              price={selectedBuns[0].price}
-              thumbnail={selectedBuns[0].image}
-            />
-        </li>
-        )} */}
         <ul className={`pt-4 ${style.list}`}>
           {selectedFillings.map((item, index) => (
             <Filling
@@ -117,7 +109,7 @@ const BurgerConstructor = () => {
            <p className="text text_type_digits-medium">{sum}</p>
            <CurrencyIcon className={style.icon} />
          </div>
-         <Button htmlType="button" onClick={onCreateOrder}>Оформить заказ</Button>
+         <Button htmlType="button" onClick={onCreateOrder} disabled={!selectedFillings.length || !selectedBuns.length} >Оформить заказ</Button>
        </div>
        {!!orderNumber && <Modal onClose={handleCloseModal} ><OrderDetails orderNumber={orderNumber}/></Modal>}
     </section>

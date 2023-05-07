@@ -9,8 +9,8 @@ import { ingredientType } from '../../utils/types';
 const Ingredient = ({ ingredient, onClick = () => { }, type }) => {
   const selected = useSelector((state) => {
     return type === 'bun'
-      ? state.ingredients.selectedBuns
-      : state.ingredients.selectedFillings;
+      ? state.burgerConstructor.selectedBuns
+      : state.burgerConstructor.selectedFillings;
   })
 
   const count = selected.filter(item =>

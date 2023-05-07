@@ -5,7 +5,7 @@ import style from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
-import { deleteDetailIngredient, updateDetailIngredient } from '../../services/actions/ingredients';
+import { deleteDetailsIngredient, updateDetailsIngredient } from '../../services/actions/detail-ingredient';
 
 const BurgerIngredients = () => {
 
@@ -13,7 +13,7 @@ const BurgerIngredients = () => {
 
   const [current, setCurrent] = useState('bun');
   const positions = useSelector((state) => state.ingredients.items);
-  const detailIngredient = useSelector((state) => state.ingredients?.detailIngredient)
+  const detailIngredient = useSelector((state) => state.detailsIngredient?.detailIngredient)
 
   const breads = positions.filter((item) => item.type === 'bun');
   const sauce = positions.filter((item) => item.type === 'sauce');
@@ -23,11 +23,11 @@ const BurgerIngredients = () => {
   const refTitle = useRef({ bun: createRef(), sauce: createRef(), main: createRef() });
 
   const handleCloseModal = () => {
-    dispatch(deleteDetailIngredient())
+    dispatch(deleteDetailsIngredient())
   }
 
   const setModalActive = (item) => {
-    dispatch(updateDetailIngredient(item));
+    dispatch(updateDetailsIngredient(item));
   };
 
   const handleClickTab = (newCurrent) => {

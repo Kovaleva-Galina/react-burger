@@ -5,7 +5,7 @@ import style from './filling.module.css';
 import { DragIcon, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import { ingredientType } from '../../utils/types';
 
-const Filling = ({ item, onDelete = () => {}, type = 'filling' , onDrop = () => {}, index }) => {
+const Filling = ({ item, onDelete = () => {}, type = 'filling-item' , onDrop = () => {}, index }) => {
   const ref = useRef(null);
   const [, dragRef] = useDrag({
     type,

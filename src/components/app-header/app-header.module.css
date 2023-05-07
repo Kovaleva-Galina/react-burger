@@ -35,6 +35,8 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  text-decoration: none;
+  color: #8585AD;
 }
 
 .logo {
@@ -51,6 +53,8 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  text-decoration: none;
+  color: #8585AD;
 }
 
 .item_type_current {

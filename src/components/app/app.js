@@ -12,7 +12,7 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(updateIngredients());
-  }, []);
+  });
 
   return (
     <div className={`p-10 ${style.app}`} >
@@ -26,7 +26,5 @@ function App() {
     </div>
   );
 }
-
-// ref={dropTarget}
 
 export default App;
