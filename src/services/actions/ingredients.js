@@ -19,6 +19,9 @@ export function updateIngredients() {
       } else {
         dispatch(getIngredientsFailed());
       }
-    });
+    })
+    .catch(() => {
+      dispatch(getIngredientsFailed());
+    })
   };
 }
