@@ -20,6 +20,9 @@ export const updateOrder = (keysNumbers) => {
       } else {
         dispatch(getOrderFailed());
       }
-    });
+    })
+    .catch(() => {
+      dispatch(getOrderFailed());
+    })
   }
 }

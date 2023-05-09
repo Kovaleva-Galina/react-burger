@@ -56,7 +56,7 @@ const BurgerConstructor = () => {
   }
 
   const onCreateOrder = () => {
-    dispatch(updateOrder(calcKeys([...selectedBuns, ...selectedFillings])));
+    dispatch(updateOrder(calcKeys([selectedBuns[0], ...selectedFillings, selectedBuns[1]])));
   };
 
   const onDropFilling = (dragItem, dropIndex) => {

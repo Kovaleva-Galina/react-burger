@@ -1,29 +1,22 @@
-export const baseUrl = 'https://norma.nomoreparties.space/api';
+export const BASE_URL = 'https://norma.nomoreparties.space/api';
+
+const checkResponse = res => {
+  return res.ok ? res.json() : res.json().then(err => Promise.reject(err));
+};
 
 export const fetchOrder = (keysNumbers) => {
-    return fetch((`${baseUrl}/orders`), {
-      method: 'POST',
-      body: JSON.stringify({
-        ingredients: keysNumbers
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-    .then(res => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject(`Ошибка ${res.status}`);
+  return fetch((`${BASE_URL}/orders`), {
+    method: 'POST',
+    body: JSON.stringify({
+      ingredients: keysNumbers
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
   })
+  .then(checkResponse)
 }
 
 export const fetchIngredients = () => {
-  return fetch(`${baseUrl}/ingredients`)
-  .then(res => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Ошибка ${res.status}`);
-  })
+  return fetch(`${BASE_URL}/ingredients`).then(checkResponse)
 }
