@@ -1,6 +1,5 @@
 .app {
   text-align: center;
-  overflow: hidden;
   box-sizing: border-box;
   height: 100vh;
   width: 100vw;
@@ -10,9 +9,8 @@
   text-align: center;
   display: flex;
   gap: 40px;
-  overflow: hidden;
   justify-content: center;
-  height: calc(100vh - 88px - 80px);
+  height: calc(100vh - 88px - 160px);
 }
 
 .app_logo {

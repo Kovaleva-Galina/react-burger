@@ -3,6 +3,7 @@ import style from './ingredient-details.module.css';
 import { ingredientType } from '../../utils/types';
 
 const IngredientDetails = ({ item }) => {
+  if (!item) return null;
   return (
     <div className={`pl-10 pr-10 ${style.content}`}>
       <img src={item.image} alt='Галочка' className={`mb-4 ${style.image}`}></img>

@@ -1,9 +1,9 @@
 .burger_constructor {
   display: flex;
   flex-direction: column;
-  gap: 16px;
   box-sizing: border-box;
   align-items: flex-start;
+  height: calc(100vh - 320px);
 }
 
 .info {
@@ -12,15 +12,16 @@
   justify-content: flex-end;
 }
 
-.content {
-  width: 98%;
-  display: flex;
-  align-items: center;
-  gap: 13px;
+.content__extrime {
+  width: 90%;
+  list-style: none;
 }
 
-.content__extrime {
-  width: 91%;
+.positions_list {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .list {
@@ -29,7 +30,8 @@
   margin: 0;
   padding: 0;
   gap: 16px;
-  overflow-y: scroll;
+  overflow-y: auto;
+  height: calc(100vh - 626px);
 }
 
 .price {

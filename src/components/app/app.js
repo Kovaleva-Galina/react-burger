@@ -1,33 +1,29 @@
-import { React, useState, useEffect} from 'react';// импорт библиотеки
+import { useEffect } from 'react';
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { useDispatch } from 'react-redux';
 import style from './app.module.css';
 import AppHeader from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { Context } from '../context/context';
-import { fetchIngredients } from '../../utils/api';
+import { updateIngredients } from '../../services/actions/ingredients';
 
 function App() {
-  const [posittions, setComponents] = useState([]);
-
+  const dispatch = useDispatch();
   useEffect(() => {
-      fetchIngredients()
-      .then((post) => {
-        setComponents(post.data);
-      })
-      .catch((error) => {
-        console.log('Error: ', error)
-      });
-  }, []);
-
+    dispatch(updateIngredients());
+  });
 
   return (
-    <Context.Provider value={posittions} className={`p-10 ${style.app}`} >
-        <AppHeader className={style.app_header} />
+    <div className={`p-10 ${style.app}`} >
+      <AppHeader className={style.app_header} />
+      <DndProvider backend={HTML5Backend}>
         <main className={`p-10 ${style.app_menu}`}>
           <BurgerIngredients />
           <BurgerConstructor />
         </main>
-    </Context.Provider>
+      </DndProvider>
+    </div>
   );
 }
 

@@ -3,7 +3,6 @@ import style from './order-details.module.css';
 import PropTypes from 'prop-types';
 
 const OrderDetails = ({orderNumber}) => {
-
   return (
     <div className={`mt-5 mb-15 pr-10 pl-10 ${style.order_content}`}>
       <div className={style.statistic}>
