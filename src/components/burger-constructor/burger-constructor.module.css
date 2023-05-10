@@ -3,7 +3,7 @@
   flex-direction: column;
   box-sizing: border-box;
   align-items: flex-start;
-  height: calc(100vh - 320px);
+  height: calc(100vh - 270px);
 }
 
 .info {
@@ -31,7 +31,7 @@
   padding: 0;
   gap: 16px;
   overflow-y: auto;
-  height: calc(100vh - 626px);
+  height: calc(100vh - 580px);
 }
 
 .price {

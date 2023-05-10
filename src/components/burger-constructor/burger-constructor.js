@@ -43,8 +43,9 @@ const BurgerConstructor = () => {
 
   const dispatch = useDispatch();
 
-  const onDelete = (item) => {
-    dispatch(deleteSelectedFilling(item._id));
+  const onDelete = (index) => {
+    console.log(index);
+    dispatch(deleteSelectedFilling(index));
   };
 
   const sum = useMemo(() => {
@@ -68,7 +69,7 @@ const BurgerConstructor = () => {
   }
 
   return (
-    <section className={`p-5 mt-10 mb-8 ${style.burger_constructor}`}>
+    <section className={`p-5 mt-10 ${style.burger_constructor}`}>
       <ul  className={style.positions_list} ref={refDropZone}>
         {!!selectedBuns[0] && (
           <li className={`pl-9 pb-4 ${style.content__extrime}`}>

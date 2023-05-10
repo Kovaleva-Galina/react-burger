@@ -31,7 +31,7 @@ const Filling = ({ item, onDelete = () => {}, type = 'filling-item' , onDrop = (
         price={item.price}
         _id={item._id}
         thumbnail={item.image}
-        handleClose = {() => {onDelete(item)}}
+        handleClose = {() => {onDelete(index)}}
       />
   </li>
   )

@@ -15,7 +15,7 @@ function App() {
   });
 
   return (
-    <div className={`p-10 ${style.app}`} >
+    <div className={`pt-10 ${style.app}`} >
       <AppHeader className={style.app_header} />
       <DndProvider backend={HTML5Backend}>
         <main className={`p-10 ${style.app_menu}`}>

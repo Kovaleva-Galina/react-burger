@@ -13,7 +13,7 @@ export const burgerConstructorinitialState = {
 export const burgerConstructorReducer = (state = burgerConstructorinitialState, action) => {
   switch (action.type) {
     case DELETE_SELECTED_FILLING: {
-      return { ...state, selectedFillings: state.selectedFillings.filter(selected => selected._id !== action.id)};
+      return { ...state, selectedFillings: [...state.selectedFillings.slice(0, action.payload), ...state.selectedFillings.slice(action.payload + 1)]}
     }
     case UPDATE_SELECTED_FILLINGS: {
       return {...state, selectedFillings: [...action.payload]}
