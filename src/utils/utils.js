@@ -7,7 +7,7 @@ export function getCookie(name) {
 
 export function setCookie(name, value, props) {
   props = props || {};
-  let exp = props.expires;
+  const exp = props.expires;
   if (typeof exp == 'number' && exp) {
     const d = new Date();
     d.setTime(d.getTime() + exp * 1000);
@@ -17,7 +17,7 @@ export function setCookie(name, value, props) {
     props.expires = exp.toUTCString();
   }
   value = encodeURIComponent(value);
-  let updatedCookie = name + '=' + value;
+  const updatedCookie = name + '=' + value;
   for (const propName in props) {
     updatedCookie += '; ' + propName;
     const propValue = props[propName];

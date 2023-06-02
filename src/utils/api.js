@@ -23,7 +23,7 @@ export const fetchIngredients = () => {
   return fetch(`${BASE_URL}/ingredients`).then(checkResponse)
 }
 
-export const loginRequest = async form => {
+export const loginUserProfileRequest = async form => {
   return fetch((`${BASE_URL}/auth/login`),  {
     method: 'POST',
     headers: {
@@ -31,12 +31,7 @@ export const loginRequest = async form => {
     },
     body: JSON.stringify(form)
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Что-то пошло не так: ${res.status}`);
-  })
+  .then(checkResponse)
   .then((data) => {
     const { accessToken, refreshToken } = data;
     if (accessToken) {
@@ -46,11 +41,10 @@ export const loginRequest = async form => {
     } else {
       return Promise.reject(`Access token не найден`);
     }
-
   })
 };
 
-export const registrationRequest = async form => {
+export const registerUserProfileRequest = async form => {
   return await fetch((`${BASE_URL}/auth/register`),  {
     method: 'POST',
     headers: {
@@ -58,24 +52,20 @@ export const registrationRequest = async form => {
     },
     body: JSON.stringify(form)
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Что-то пошло не так: ${res.status}`);
-  })
+  .then(checkResponse)
   .then((data) => {
     const { accessToken, refreshToken } = data;
     if (accessToken) {
       setCookie('access-token', accessToken.split('Bearer ')[1]);
       setCookie('refresh-token', refreshToken);
+      return data;
     } else {
       return Promise.reject(`Access token не найден`);
     }
   })
 };
 
-export const codeRequest = async email => {
+export const codeUserProfileRequest = async email => {
   return fetch((`${BASE_URL}/password-reset`),  {
     method: 'POST',
     headers: {
@@ -97,12 +87,7 @@ export const updateTokenRequest = async () => {
       "token": getCookie('refresh-token')
     })
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Что-то пошло не так: ${res.status}`);
-  })
+  .then(checkResponse)
   .then((data) => {
     const { accessToken, refreshToken } = data;
     if (accessToken) {
@@ -115,8 +100,8 @@ export const updateTokenRequest = async () => {
 };
 
 //Запрос на получение данный о пользователе
-export const getUserRequest = async form =>
-  await fetch((`${BASE_URL}/auth/user`), {
+export const getUserProfileRequest = async form => {
+  return fetch((`${BASE_URL}/auth/user`), {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -129,13 +114,14 @@ export const getUserRequest = async form =>
       return res.json();
     } else if  (res.status === 403) {
       await  updateTokenRequest();
-      return getUserRequest();
+      return getUserProfileRequest();
       // обновляю токен. отправляю запрос на сервер /token. Получаю новый accessToken, сохраняю новый accessToken в кукии
     }
     return Promise.reject(`Что-то пошло не так: ${res.status}`);
-  })
+  });
+}
 
-export const passwordСonfirmation = async form => {
+export const passwordChangeUserProfileRequest = async form => {
   return fetch((`${BASE_URL}/password-reset/reset`),  {
     method: 'POST',
     headers: {
@@ -145,18 +131,21 @@ export const passwordСonfirmation = async form => {
   });
 };
 
-export const logoutProfile = async form => {
+export const logoutUserProfileRequest = async form => {
   return await fetch((`${BASE_URL}/auth/logout`),  {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(form)
-  });
+    body: JSON.stringify({
+      "token": getCookie('refresh-token')
+    })
+  })
+  .then(checkResponse)
 };
 
 //Обновление данных пользователя
-export const updateUserRequest = async form =>
+export const updateUserProfileRequest = async form =>
   await fetch((`${BASE_URL}/auth/user`), {
     method: 'PATCH',
     headers: {
@@ -165,27 +154,4 @@ export const updateUserRequest = async form =>
     },
     body: JSON.stringify(form),
   })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Что-то пошло не так: ${res.status}`);
-  })
-
-  //Выход из системы
-export const exitRequest = async () =>
-  await fetch((`${BASE_URL}/auth/logout`), {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      "token": getCookie('refresh-token')
-    })
-  })
-  .then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-    return Promise.reject(`Что-то пошло не так: ${res.status}`);
-  })
+  .then(checkResponse)

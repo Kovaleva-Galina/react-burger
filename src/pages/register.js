@@ -1,11 +1,13 @@
 import { Input, PasswordInput, EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useCallback, useRef, useState } from "react";
+import { useSelector } from 'react-redux';
 import styles from './register.module.css';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../services/auth';
 
 export const RegisterPage = () => {
-  const { user, isUserLoaded } = useAuth();
+  const userRegisterRequest = useSelector((state) => state.userProfile?.userRegisterRequest);
+  const { user, signUp, isUserLoaded } = useAuth();
   const [form, setForm] = useState({name: "", email: "", password: ""});
   const navigate = useNavigate();
   const inputRef = useRef(null);
@@ -13,12 +15,13 @@ export const RegisterPage = () => {
   let register = useCallback(
     e => {
       e.preventDefault();
-      user.signUp(form)
-        if (user) {
+      signUp(form).then((data) => {
+        if (data) {
           navigate('/')
         }
+      });
     },
-    [user, form, navigate]
+    [user, form, signUp,navigate]
   );
 
   const onIconClick = (e) => {
@@ -46,7 +49,7 @@ export const RegisterPage = () => {
       <p className="text text_type_main-medium pb-6">
         Регистрация
       </p>
-      <form className={`${styles.register__form}`}>
+      <form className={`${styles.register__form}`} onSubmit={register}>
         <Input
           type={'text'}
           placeholder={'Имя'}
@@ -73,7 +76,7 @@ export const RegisterPage = () => {
           name={'password'}
           extraClass="mb-2"
         />
-        <Button onClick={register} htmlType="button" type="primary" size="medium">
+        <Button htmlType="submit" type="primary" size="medium" disabled={(!form.email.length && !form.name.length && form.password.length) || userRegisterRequest}>
           Зарегистрироваться
         </Button>
       </form>

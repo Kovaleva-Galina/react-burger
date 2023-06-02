@@ -1,16 +1,17 @@
 import { PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useCallback, useRef, useState} from "react";
 import styles from './reset-password.module.css';
+import { useSelector } from 'react-redux';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../services/auth';
 
 export const ResetPasswordPage = () => {
   const { user, isUserLoaded } = useAuth();
   const [form, setForm] = useState({});
-
+  const passwordChangeUserRequest = useSelector((state) => state.userProfile?.passwordChangeUserRequest);
   const navigate = useNavigate();
   const inputRef = useRef(null);
-  let auth = useAuth();
+  const auth = useAuth();
 
   const onIconClick = (e) => {
     setTimeout(() => inputRef.current.focus(), 0)
@@ -21,11 +22,11 @@ export const ResetPasswordPage = () => {
     setForm((oldForm) => ({ ...oldForm, [e.target.name]: e.target.value }));
   }
 
-  let passwordReset = useCallback(
+  const passwordReset = useCallback(
     e => {
       e.preventDefault();
       auth.changePassword(form).then((data) => {
-        if (data.success) {
+        if (data) {
           navigate('/login')
         }
       });
@@ -50,7 +51,7 @@ export const ResetPasswordPage = () => {
       <p className="text text_type_main-medium pb-6">
         Восстановление пароля
       </p>
-      <form className={`${styles.reset_password__form}`}>
+      <form className={`${styles.reset_password__form}`} onSubmit={passwordReset}>
         <PasswordInput
           value={form.password || ''}
           name={'password'}
@@ -73,10 +74,10 @@ export const ResetPasswordPage = () => {
           extraClass="ml-1"
         />
         <Button
-          onClick={passwordReset}
-          htmlType="button"
+          htmlType="submit"
           type="primary"
           size="medium"
+          disabled={ passwordChangeUserRequest }
         >
           Сохранить
         </Button>

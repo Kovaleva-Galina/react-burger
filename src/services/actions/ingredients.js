@@ -13,11 +13,7 @@ export function updateIngredients() {
     dispatch(getIngredientsRequest());
     return fetchIngredients()
     .then(json => {
-      if (json && json.success) {
-        dispatch(getIngredientsSuccess(json.data));
-      } else {
-        dispatch(getIngredientsFailed());
-      }
+      dispatch(getIngredientsSuccess(json.data));
     })
     .catch(() => {
       dispatch(getIngredientsFailed());

@@ -1,10 +1,12 @@
 import { Input, EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useState, useRef } from "react";
+import { useSelector } from 'react-redux';
 import styles from './profile.module.css';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../services/auth';
 
 export const Profile = () => {
+  const userUpdateRequest = useSelector((state) => state.userProfile?.userUpdateRequest);
   const { user, updateUser } = useAuth();
   const [form, setForm] = useState(user);
   const [current, setCurrent] = useState('profile');
@@ -101,10 +103,10 @@ export const Profile = () => {
           extraClass="ml-1"
         />
         <div  className={`${styles.profile__buttons}`}>
-          <Button htmlType="button" type="secondary" size="large" onClick={resetUpdate}>
+          <Button htmlType="button" type="secondary" size="large" onClick={resetUpdate} disabled={ form.name === user.name && form.email === user.email && form.password === user.password }>
             Отмена
           </Button>
-          <Button htmlType="submit" type="primary" size="medium">
+          <Button htmlType="submit" type="primary" size="medium" disabled={ userUpdateRequest || (form.name === user.name && form.email === user.email && form.password === user.password) } >
             Сохранить
           </Button>
         </div>

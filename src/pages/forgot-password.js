@@ -1,25 +1,26 @@
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useCallback, useState } from "react";
+import { useSelector } from 'react-redux';
 import styles from './forgot-password.module.css';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../services/auth';
 
 
 export const ForgotPasswordPage = () => {
-  const { user, isUserLoaded } = useAuth();
+  const codeUserRequest = useSelector((state) => state.userProfile?.codeUserRequest);
   const [email, setEmail] = useState("");
-  let auth = useAuth();
+  const auth = useAuth();
   const navigate = useNavigate();
 
   const onChange = e => {
     setEmail(e.target.value);
   }
 
-  let confirmEmail = useCallback(
+  const confirmEmail = useCallback(
     e => {
       e.preventDefault();
       auth.checkingProfile(email).then((data) => {
-        if (data.success) {
+        if (data) {
           navigate('/reset-password')
         }
       });
@@ -27,9 +28,9 @@ export const ForgotPasswordPage = () => {
     [auth, email, navigate]
   );
 
-  if (!isUserLoaded) return null;
+  // if (!isUserLoaded) return null;
 
-  if (user) {
+  if (auth.user) {
     return (
       // Переадресовываем авторизованного пользователя на главную страницу
       <Navigate
@@ -55,6 +56,7 @@ export const ForgotPasswordPage = () => {
           htmlType="submit"
           type="primary"
           size="medium"
+          disabled={!email.length || codeUserRequest}
         >
         Восстановить
         </Button>

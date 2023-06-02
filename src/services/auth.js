@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { loginRequest, registrationRequest, passwordСonfirmation, codeRequest, getUserRequest, updateUserRequest, exitRequest } from '../utils/api';
+import { useSelector, useDispatch } from 'react-redux';
+import { getUser as getUserAction, loginUser, registerUser, updateUser as updateUserAction, logoutUser, codeUser, changePasswordUser} from './actions/user-profile';
 
 const AuthContext = createContext(undefined);
 
@@ -18,77 +19,47 @@ export function useAuth() {
 }
 
 export function useProvideAuth() {
-  const [isUserLoaded, setUserLoaded] = useState(false);
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.userProfile.user);
+  const isLoaded = useSelector((state) => state.userProfile.isLoaded);
 
   const getUser = async () => {
-    return await getUserRequest()
-    .then(data => {
-      if (data.success) {
-        setUser({ ...data.user, name: data.user.name, email: data.user.email  });
-      }
-      return data;
-    })
-    .finally(() => {
-      setUserLoaded(true);
-    })
+    dispatch(getUserAction());
   }
 
   //Вход пользователя после регистрации
   const signUp = async form => {
-    return registrationRequest(form)
-    .then(data => {
-      setUser({ ...data.user, name: data.user.name, email: data.user.email });
-      return data;
-    });
+    return dispatch(registerUser(form))
   };
 
   //Вход пользователя с помощь логина и пароля
   const signIn = async form => {
-    return loginRequest(form)
-    .then(data => {
-      setUser({ ...data.user, email: data.user.email, name: data.user.name });
-      return data.success;
-    });
+    return dispatch(loginUser(form))
   };
 
-  //Проверка наличия пользователя по e-mail
+  //Запрос на проверочный код
   const checkingProfile = async email => {
-    return codeRequest(email)
-      .then(res => {
-        return res.json();
-      });
+    return dispatch(codeUser(email))
   };
 
-  //Восстановление пароля
+  //Запрос на смену пароля
   const changePassword = async form => {
-    return passwordСonfirmation(form)
-      .then(res => {
-        return res.json();
-      });
+    return dispatch(changePasswordUser(form));
   };
 
   //Выход пользователя
-  const signOut = cb => {
-    return exitRequest()
-      .then(data => {
-        setUser(null);
-        return data;
-      });
-    };
+  const signOut = () => {
+    dispatch(logoutUser())
+  };
 
   //Изменение данных пользователя
   const updateUser = async (form) => {
-    return updateUserRequest(form)
-    .then(data => {
-      setUser({ ...data.user, name: data.user.name, email: data.user.email });
-      return data;
-    });
+    dispatch(updateUserAction(form));
   }
 
   return {
     user,
-    isUserLoaded,
+    isUserLoaded: isLoaded,
     getUser,
     signIn,
     signUp,

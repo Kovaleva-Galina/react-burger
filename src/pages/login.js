@@ -1,49 +1,44 @@
 import { PasswordInput, EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import { useCallback, useState } from "react";
+import { useSelector } from 'react-redux';
 import styles from './login.module.css';
-import { Link, useNavigate, Navigate } from 'react-router-dom';
+import { Link, useNavigate, Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../services/auth';
 
 export const LoginPage = () => {
-  const { signIn, user, isUserLoaded } = useAuth();
+  const userLoginRequest = useSelector((state) => state.userProfile?.userLoginRequest);
+  const { signIn, isUserLoaded } = useAuth();
   const [form, setValue] = useState({ email: '', password: '' });
   const navigate = useNavigate();
+  const location = useLocation();
 
   const onChange = e => {
     setValue({ ...form, [e.target.name]: e.target.value });
   };
 
-  let login = useCallback(
+  const login = useCallback(
     async e => {
       e.preventDefault();
       try {
         await signIn(form);
-        navigate('/')
+        navigate(location.state?.from || '/')
       } catch (e) {
         console.error('errr', e);
       }
+
     },
     [form, signIn, navigate]
   );
 
-  if (!isUserLoaded) return null;
 
-  if (user) {
-    return (
-      // Переадресовываем авторизованного пользователя на главную страницу
-      <Navigate
-        to="/"
-        replace
-      />
-    );
-  }
+  if (!isUserLoaded) return null;
 
   return (
     <div className={`pt-30 pb-6 ${styles.login}`}>
       <p className="text text_type_main-medium pb-6">
         Вход
       </p>
-      <form className={`${styles.login__form}`}>
+      <form className={`${styles.login__form}`} onSubmit={login}>
         <EmailInput
           placeholder="Email"
           value={form.email || ''}
@@ -57,7 +52,7 @@ export const LoginPage = () => {
         extraClass="mb-2"
         onChange={onChange}
         />
-        <Button onClick={login} htmlType="button" type="primary" size="medium">
+        <Button htmlType="submit" type="primary" size="medium" disabled={ userLoginRequest } >
           Войти
         </Button>
       </form>

@@ -1,10 +1,16 @@
-import React from "react";
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon, } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app-header.module.css';
 
 const AppHeader = () => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  const resetHomePage = () => {
+    if (pathname !== '/') {
+      navigate('/');
+    }
+  }
 
   return (
     <header className={styles.app_header}>
@@ -18,7 +24,7 @@ const AppHeader = () => {
           <p className="text text_type_main-small">Лента заказов</p>
         </Link>
       </div>
-      <div className={styles.logo}>
+      <div className={styles.logo} onClick={resetHomePage}>
         <Logo />
       </div>
       <Link to='/profile' className={`pt-4 pr-5 pb-4 pl-5 ${styles.profile} ${pathname === '/profile' ? styles.item_type_current : ''}`}>
