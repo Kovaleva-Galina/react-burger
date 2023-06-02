@@ -1,0 +1,7 @@
+.home_menu {
+  text-align: center;
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  height: calc(100vh - 88px - 160px);
+}

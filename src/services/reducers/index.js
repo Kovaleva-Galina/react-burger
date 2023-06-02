@@ -9,8 +9,8 @@ import thunk from 'redux-thunk';
 const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
   burgerConstructor: burgerConstructorReducer,
-  detailsIngredient: detailsIngredientReducer,
-  orderNumber: orderNumberReducer,
+  detailIngredient: detailsIngredientReducer,
+  orderNumber: orderNumberReducer
 })
 
 export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));

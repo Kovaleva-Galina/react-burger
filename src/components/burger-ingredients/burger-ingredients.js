@@ -1,19 +1,16 @@
 import { useState, memo, useRef, createRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
-import Modal from '../modal/modal';
-import IngredientDetails from '../ingredient-details/ingredient-details';
-import { deleteDetailsIngredient, updateDetailsIngredient } from '../../services/actions/detail-ingredient';
+import { updateDetailsIngredient } from '../../services/actions/detail-ingredient';
 
 const BurgerIngredients = () => {
 
   const dispatch = useDispatch();
-
   const [current, setCurrent] = useState('bun');
   const positions = useSelector((state) => state.ingredients.items);
-  const detailIngredient = useSelector((state) => state.detailsIngredient?.detailIngredient)
 
   const breads = positions.filter((item) => item.type === 'bun');
   const sauce = positions.filter((item) => item.type === 'sauce');
@@ -21,10 +18,6 @@ const BurgerIngredients = () => {
 
   const refContainer = useRef();
   const refTitle = useRef({ bun: createRef(), sauce: createRef(), main: createRef() });
-
-  const handleCloseModal = () => {
-    dispatch(deleteDetailsIngredient())
-  }
 
   const setModalActive = (item) => {
     dispatch(updateDetailsIngredient(item));
@@ -65,27 +58,28 @@ const BurgerIngredients = () => {
         <p className="text text_type_main-medium" ref={refTitle.current.bun} >Булки</p>
         <ul className={`pt-6 pr-4 pb-10 mb-10 ${style.list}`}>
           {breads.map((ingredient) => (
-            <Ingredient ingredient={ingredient} onClick={setModalActive} key={ingredient._id} type="bun" />
+            <Link className={`${style.link}`} to={`ingredients/${ingredient._id}`} key={ingredient._id} state={{ ingredientId: ingredient._id }} >
+              <Ingredient ingredient={ingredient} type="bun" onClick={setModalActive} />
+            </Link>
           ))}
         </ul>
         <p className="text text_type_main-medium" ref={refTitle.current.sauce}>Соусы</p>
         <ul className={`pt-6 pr-4 pb-10 mb-10 ${style.list}`}>
           {sauce.map((ingredient) => (
-            <Ingredient ingredient={ingredient} onClick={setModalActive} key={ingredient._id} type="filling" />
+            <Link className={`${style.link}`} to={`ingredients/${ingredient._id}`} key={ingredient._id} state={{ ingredientId: ingredient._id }} >
+              <Ingredient ingredient={ingredient} type="filling" onClick={setModalActive} />
+            </Link>
           ))}
         </ul>
         <p className="text text_type_main-medium" ref={refTitle.current.main}>Начинки</p>
         <ul className={`pt-6 pr-4 pb-10 mb-10 ${style.list}`}>
           {main.map((ingredient) => (
-            <Ingredient ingredient={ingredient} onClick={setModalActive} key={ingredient._id} type="filling" />
+            <Link className={`${style.link}`} to={`ingredients/${ingredient._id}`} key={ingredient._id} state={{ ingredientId: ingredient._id }} >
+              <Ingredient ingredient={ingredient} type="filling" onClick={setModalActive}/>
+            </Link>
           ))}
         </ul>
       </ul>
-      {!!detailIngredient && (
-        <Modal onClose={handleCloseModal} header="Детали ингредиента">
-          <IngredientDetails item={detailIngredient} />
-        </Modal>
-      )}
     </section>
   )
 }

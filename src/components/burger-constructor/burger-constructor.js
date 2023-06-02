@@ -9,9 +9,15 @@ import Modal from '../modal/modal';
 import { calcKeys, calcSum } from './burger-constructor.utils';
 import { deleteOrder, updateOrder } from '../../services/actions/order';
 import { deleteSelectedFilling, updateSelectedFillings, updateSelectedBuns, addSelectedFilling } from '../../services/actions/burger-constructor';
+import { useAuth } from '../../services/auth';
+import { useNavigate } from 'react-router-dom';
 
 
 const BurgerConstructor = () => {
+
+  const { isUserLoaded } = useAuth();
+  const navigate = useNavigate();
+
   const refDropZone = useRef();
   const onDropHandlerBun =(item) => {
     dispatch(updateSelectedBuns(item));
@@ -24,7 +30,7 @@ const BurgerConstructor = () => {
   const [, dropFillingsRef] = useDrop({
     accept: "filling",
     drop(item) {
-       onDropHandlerFilling(item);
+      onDropHandlerFilling(item);
     },
   });
 
@@ -44,7 +50,6 @@ const BurgerConstructor = () => {
   const dispatch = useDispatch();
 
   const onDelete = (index) => {
-    console.log(index);
     dispatch(deleteSelectedFilling(index));
   };
 
@@ -57,6 +62,9 @@ const BurgerConstructor = () => {
   }
 
   const onCreateOrder = () => {
+    if (isUserLoaded) {
+      navigate('/login')
+    }
     dispatch(updateOrder(calcKeys([selectedBuns[0], ...selectedFillings, selectedBuns[1]])));
   };
 

@@ -10,7 +10,7 @@ export const DetailsInitialState = {
 export const detailsIngredientReducer = (state = DetailsInitialState, action) => {
   switch (action.type) {
     case UPDATE_DETAILS_INGREDIENT: {
-      return { ...state, detailIngredient: { ...action.payload } }
+      return { ...state, detailIngredient: action.payload }
     }
     case DELETE_DETAILS_INGREDIENT: {
       return {...state, detailIngredient: null}

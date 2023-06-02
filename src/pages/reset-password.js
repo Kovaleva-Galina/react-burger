@@ -1,0 +1,90 @@
+import { PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
+import { useCallback, useRef, useState} from "react";
+import styles from './reset-password.module.css';
+import { Link, useNavigate, Navigate } from 'react-router-dom';
+import { useAuth } from '../services/auth';
+
+export const ResetPasswordPage = () => {
+  const { user, isUserLoaded } = useAuth();
+  const [form, setForm] = useState({});
+
+  const navigate = useNavigate();
+  const inputRef = useRef(null);
+  let auth = useAuth();
+
+  const onIconClick = (e) => {
+    setTimeout(() => inputRef.current.focus(), 0)
+    alert('Icon Click Callback')
+  }
+
+  const onChange = e => {
+    setForm((oldForm) => ({ ...oldForm, [e.target.name]: e.target.value }));
+  }
+
+  let passwordReset = useCallback(
+    e => {
+      e.preventDefault();
+      auth.changePassword(form).then((data) => {
+        if (data.success) {
+          navigate('/login')
+        }
+      });
+    },
+    [auth, form, navigate]
+  );
+
+  if (!isUserLoaded) return null;
+
+  if (user) {
+    return (
+      // Переадресовываем авторизованного пользователя на главную страницу
+      <Navigate
+        to="/"
+        replace
+      />
+    );
+  }
+
+  return (
+    <div className={`pt-30 pb-6 ${styles.reset_password}`}>
+      <p className="text text_type_main-medium pb-6">
+        Восстановление пароля
+      </p>
+      <form className={`${styles.reset_password__form}`}>
+        <PasswordInput
+          value={form.password || ''}
+          name={'password'}
+          extraClass="mb-2"
+          placeholder={'Введите новый пароль'}
+          onChange={onChange}
+        />
+        <Input
+          type={'text'}
+          placeholder={'Введите код из письма'}
+          onChange={onChange}
+          icon={undefined}
+          value={form.token || ''}
+          name={'token'}
+          error={false}
+          ref={inputRef}
+          onIconClick={onIconClick}
+          errorText={'Ошибка'}
+          size={'default'}
+          extraClass="ml-1"
+        />
+        <Button
+          onClick={passwordReset}
+          htmlType="button"
+          type="primary"
+          size="medium"
+        >
+          Сохранить
+        </Button>
+      </form>
+      <p className="pt-20 text text_type_main-default">
+        Вспомнили пароль?&#160;
+        <Link to='/login' className={`${styles.reset_password__link}`}>Войти</Link>
+      </p>
+  </div>
+  )
+}
