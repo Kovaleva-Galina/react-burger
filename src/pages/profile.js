@@ -17,7 +17,6 @@ export const Profile = () => {
   const onIconClick = () => {
     setTimeout(() => inputRef.current.focus(), 0)
   }
-
   const onChange = e => {
     setForm((oldForm) => ({ ...oldForm, [e.target.name]: e.target.value }));
   }
