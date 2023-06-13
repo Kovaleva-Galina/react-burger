@@ -2,7 +2,6 @@ import {
   GET_INGREDIENTS_SUCCESS,
   GET_INGREDIENTS_FAILED,
   GET_INGREDIENTS_REQUEST
-
 } from '../actions/ingredients';
 
 export const ingredientsInitialState = {

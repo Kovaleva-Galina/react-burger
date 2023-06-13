@@ -33,6 +33,11 @@
   padding-left: 0;
 }
 
+.link {
+  color: #F2F2F3;
+  text-decoration: none;
+}
+
 .ingredients::-webkit-scrollbar {
   height: 12px;
   width: 8px;

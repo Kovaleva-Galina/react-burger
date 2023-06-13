@@ -8,10 +8,15 @@ import Filling from '../filling/filling';
 import Modal from '../modal/modal';
 import { calcKeys, calcSum } from './burger-constructor.utils';
 import { deleteOrder, updateOrder } from '../../services/actions/order';
-import { deleteSelectedFilling, updateSelectedFillings, updateSelectedBuns, addSelectedFilling } from '../../services/actions/burger-constructor';
-
+import { deleteSelectedFilling, updateSelectedFillings, updateSelectedBuns, addSelectedFilling, deleteSelectedList } from '../../services/actions/burger-constructor';
+import { useAuth } from '../../services/auth';
+import { useNavigate } from 'react-router-dom';
 
 const BurgerConstructor = () => {
+
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
   const refDropZone = useRef();
   const onDropHandlerBun =(item) => {
     dispatch(updateSelectedBuns(item));
@@ -24,7 +29,7 @@ const BurgerConstructor = () => {
   const [, dropFillingsRef] = useDrop({
     accept: "filling",
     drop(item) {
-       onDropHandlerFilling(item);
+      onDropHandlerFilling(item);
     },
   });
 
@@ -40,11 +45,11 @@ const BurgerConstructor = () => {
   const selectedBuns = useSelector((state) => state.burgerConstructor.selectedBuns);
   const selectedFillings = useSelector((state) => state.burgerConstructor.selectedFillings);
   const orderNumber = useSelector((state) => state.orderNumber?.orderNumber?.number);
+  const orderNumberRequest = useSelector((state) => state.orderNumber?.orderNumberRequest);
 
   const dispatch = useDispatch();
 
   const onDelete = (index) => {
-    console.log(index);
     dispatch(deleteSelectedFilling(index));
   };
 
@@ -53,10 +58,14 @@ const BurgerConstructor = () => {
   }, [selectedBuns, selectedFillings]);
 
   const handleCloseModal = () => {
-    dispatch(deleteOrder())
+    dispatch(deleteSelectedList());
+    dispatch(deleteOrder());
   }
 
   const onCreateOrder = () => {
+    if (!user) {
+      navigate('/login')
+    }
     dispatch(updateOrder(calcKeys([selectedBuns[0], ...selectedFillings, selectedBuns[1]])));
   };
 
@@ -110,7 +119,7 @@ const BurgerConstructor = () => {
            <p className="text text_type_digits-medium">{sum}</p>
            <CurrencyIcon className={style.icon} />
          </div>
-         <Button htmlType="button" onClick={onCreateOrder} disabled={!selectedFillings.length || !selectedBuns.length} >Оформить заказ</Button>
+         <Button htmlType="button" onClick={onCreateOrder} disabled={!selectedFillings.length || !selectedBuns.length || orderNumberRequest} >Оформить заказ</Button>
        </div>
        {!!orderNumber && <Modal onClose={handleCloseModal} ><OrderDetails orderNumber={orderNumber}/></Modal>}
     </section>

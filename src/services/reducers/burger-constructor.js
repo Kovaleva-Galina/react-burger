@@ -2,7 +2,8 @@ import {
   DELETE_SELECTED_FILLING,
   UPDATE_SELECTED_FILLINGS,
   UPDATE_SELECTED_BUNS,
-  ADD_SELECTED_FILLING
+  ADD_SELECTED_FILLING,
+  DELETE_SELECTED_LIST
 } from '../actions/burger-constructor'
 
 export const burgerConstructorinitialState = {
@@ -23,6 +24,9 @@ export const burgerConstructorReducer = (state = burgerConstructorinitialState, 
     }
     case ADD_SELECTED_FILLING : {
       return {...state, selectedFillings: [...state.selectedFillings, action.payload]}
+    }
+    case DELETE_SELECTED_LIST : {
+      return { selectedFillings: [], selectedBuns: [] }
     }
     default:
       return state;
