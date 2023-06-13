@@ -2,8 +2,8 @@ import { PasswordInput, EmailInput, Button } from '@ya.praktikum/react-developer
 import { useCallback, useState } from "react";
 import { useSelector } from 'react-redux';
 import styles from './login.module.css';
-import { Link, useNavigate, Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../services/auth';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../redux/auth';
 
 export const LoginPage = () => {
   const userLoginRequest = useSelector((state) => state.userProfile?.userLoginRequest);
@@ -47,12 +47,12 @@ export const LoginPage = () => {
           onChange={onChange}
         />
         <PasswordInput
-        value={form.password || ''}
-        name={'password'}
-        extraClass="mb-2"
-        onChange={onChange}
+          value={form.password || ''}
+          name={'password'}
+          extraClass="mb-2"
+          onChange={onChange}
         />
-        <Button htmlType="submit" type="primary" size="medium" disabled={ userLoginRequest } >
+        <Button htmlType="submit" type="primary" size="medium" disabled={userLoginRequest} >
           Войти
         </Button>
       </form>
@@ -65,6 +65,6 @@ export const LoginPage = () => {
         <Link to='/forgot-password' className={`${styles.login__link}`}>Восстановить пароль</Link>
       </p>
 
-  </div>
+    </div>
   )
 }

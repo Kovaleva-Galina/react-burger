@@ -1,0 +1,13 @@
+.order_feed {
+  height: calc(100vh - 88px - 160px);
+  max-width: 1240px;
+  margin: auto;
+}
+
+.order_feed__info {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  height: 100%;
+  margin: auto;
+}

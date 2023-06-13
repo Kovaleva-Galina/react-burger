@@ -7,9 +7,9 @@ import OrderDetails from '../order-details/order-details';
 import Filling from '../filling/filling';
 import Modal from '../modal/modal';
 import { calcKeys, calcSum } from './burger-constructor.utils';
-import { deleteOrder, updateOrder } from '../../services/actions/order';
-import { deleteSelectedFilling, updateSelectedFillings, updateSelectedBuns, addSelectedFilling, deleteSelectedList } from '../../services/actions/burger-constructor';
-import { useAuth } from '../../services/auth';
+import { deleteOrder, updateOrder } from '../../redux/actions/order';
+import { deleteSelectedFilling, updateSelectedFillings, updateSelectedBuns, addSelectedFilling, deleteSelectedList } from '../../redux/actions/burger-constructor';
+import { useAuth } from '../../redux/auth';
 import { useNavigate } from 'react-router-dom';
 
 const BurgerConstructor = () => {
@@ -18,11 +18,11 @@ const BurgerConstructor = () => {
   const navigate = useNavigate();
 
   const refDropZone = useRef();
-  const onDropHandlerBun =(item) => {
+  const onDropHandlerBun = (item) => {
     dispatch(updateSelectedBuns(item));
   }
 
-  const onDropHandlerFilling =(item) => {
+  const onDropHandlerFilling = (item) => {
     dispatch(addSelectedFilling(item));
   }
 
@@ -36,7 +36,7 @@ const BurgerConstructor = () => {
   const [, dropBunsRef] = useDrop({
     accept: "bun",
     drop(item) {
-     onDropHandlerBun(item);
+      onDropHandlerBun(item);
     },
   });
 
@@ -79,7 +79,7 @@ const BurgerConstructor = () => {
 
   return (
     <section className={`p-5 mt-10 ${style.burger_constructor}`}>
-      <ul  className={style.positions_list} ref={refDropZone}>
+      <ul className={style.positions_list} ref={refDropZone}>
         {!!selectedBuns[0] && (
           <li className={`pl-9 pb-4 ${style.content__extrime}`}>
             <ConstructorElement
@@ -89,7 +89,7 @@ const BurgerConstructor = () => {
               price={selectedBuns[0].price}
               thumbnail={selectedBuns[0].image}
             />
-        </li>
+          </li>
         )}
         <ul className={`pt-4 ${style.list}`}>
           {selectedFillings.map((item, index) => (
@@ -115,13 +115,13 @@ const BurgerConstructor = () => {
         )}
       </ul>
       <div className={style.price} >
-         <div className={style.sum}>
-           <p className="text text_type_digits-medium">{sum}</p>
-           <CurrencyIcon className={style.icon} />
-         </div>
-         <Button htmlType="button" onClick={onCreateOrder} disabled={!selectedFillings.length || !selectedBuns.length || orderNumberRequest} >Оформить заказ</Button>
-       </div>
-       {!!orderNumber && <Modal onClose={handleCloseModal} ><OrderDetails orderNumber={orderNumber}/></Modal>}
+        <div className={style.sum}>
+          <p className="text text_type_digits-medium">{sum}</p>
+          <CurrencyIcon className={style.icon} />
+        </div>
+        <Button htmlType="button" onClick={onCreateOrder} disabled={!selectedFillings.length || !selectedBuns.length || orderNumberRequest} >Оформить заказ</Button>
+      </div>
+      {!!orderNumber && <Modal onClose={handleCloseModal} ><OrderDetails orderNumber={orderNumber} /></Modal>}
     </section>
   )
 }

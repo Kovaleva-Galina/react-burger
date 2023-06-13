@@ -13,7 +13,7 @@ export const detailsIngredientReducer = (state = DetailsInitialState, action) =>
       return { ...state, detailIngredient: action.payload }
     }
     case DELETE_DETAILS_INGREDIENT: {
-      return {...state, detailIngredient: null}
+      return { ...state, detailIngredient: null }
     }
     default:
       return state;

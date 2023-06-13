@@ -1,0 +1,41 @@
+.card_order {
+  list-style: none;
+  background: var(--background-element);
+  border-radius: 40px;
+  z-index: -1000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px
+}
+
+.card_order__ID {
+  display: flex;
+  justify-content: space-between;
+}
+
+.card_order__list_ingredients {
+  list-style: none;
+  display: flex;
+  z-index: 0;
+}
+
+.card_order__about_burger {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card_order__price {
+  display: flex;
+  gap: 9px
+}
+
+.card_order__date {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px
+}
+
+.card_order__text {
+  color: #00CCCC
+}

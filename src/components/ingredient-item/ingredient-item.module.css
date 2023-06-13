@@ -1,0 +1,38 @@
+.ingredient_item {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  width: 100%;
+  margin: 0;
+}
+
+.ingredient_item__image {
+  background-color: black;
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  object-fit: cover;
+  position: absolute;
+  top: 2px;
+  right: 2px;
+
+}
+
+.ingredient_item__image_wrapper {
+  background: linear-gradient(90deg, #801AB2, #4C4CFF);
+  height: 64px;
+  width: 64px;
+  border-radius: 50%;
+  position: relative;
+}
+
+.ingredient_item__text {
+  flex-grow: 2;
+}
+
+.ingredient_item__price {
+  display: flex;
+  gap: 9px;
+}

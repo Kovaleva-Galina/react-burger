@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import style from './burger-ingredients.module.css';
 import Ingredient from '../ingredient/ingredient';
-import { updateDetailsIngredient } from '../../services/actions/detail-ingredient';
+import { updateDetailsIngredient } from '../../redux/actions/detail-ingredient';
 
 const BurgerIngredients = () => {
 
@@ -25,7 +25,7 @@ const BurgerIngredients = () => {
 
   const handleClickTab = (newCurrent) => {
     setCurrent(newCurrent);
-    refTitle.current?.[newCurrent]?.current?.scrollIntoView({behavior: 'smooth'});
+    refTitle.current?.[newCurrent]?.current?.scrollIntoView({ behavior: 'smooth' });
   }
 
   const handleScroll = (event) => {
@@ -58,7 +58,7 @@ const BurgerIngredients = () => {
         <p className="text text_type_main-medium" ref={refTitle.current.bun} >Булки</p>
         <ul className={`pt-6 pr-4 pb-10 mb-10 ${style.list}`}>
           {breads.map((ingredient) => (
-            <Link className={`${style.link}`} to={`ingredients/${ingredient._id}`} key={ingredient._id} state={{ ingredientId: ingredient._id }} >
+            <Link className={`${style.link}`} to={`ingredients/${ingredient._id}`} key={ingredient._id} state={{ Id: ingredient._id }} >
               <Ingredient ingredient={ingredient} type="bun" onClick={setModalActive} />
             </Link>
           ))}
@@ -75,7 +75,7 @@ const BurgerIngredients = () => {
         <ul className={`pt-6 pr-4 pb-10 mb-10 ${style.list}`}>
           {main.map((ingredient) => (
             <Link className={`${style.link}`} to={`ingredients/${ingredient._id}`} key={ingredient._id} state={{ ingredientId: ingredient._id }} >
-              <Ingredient ingredient={ingredient} type="filling" onClick={setModalActive}/>
+              <Ingredient ingredient={ingredient} type="filling" onClick={setModalActive} />
             </Link>
           ))}
         </ul>

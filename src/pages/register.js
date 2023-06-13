@@ -3,12 +3,12 @@ import { useCallback, useRef, useState } from "react";
 import { useSelector } from 'react-redux';
 import styles from './register.module.css';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
-import { useAuth } from '../services/auth';
+import { useAuth } from '../redux/auth';
 
 export const RegisterPage = () => {
   const userRegisterRequest = useSelector((state) => state.userProfile?.userRegisterRequest);
   const { user, signUp, isUserLoaded } = useAuth();
-  const [form, setForm] = useState({name: "", email: "", password: ""});
+  const [form, setForm] = useState({ name: "", email: "", password: "" });
   const navigate = useNavigate();
   const inputRef = useRef(null);
 
@@ -21,7 +21,7 @@ export const RegisterPage = () => {
         }
       });
     },
-    [user, form, signUp,navigate]
+    [user, form, signUp, navigate]
   );
 
   const onIconClick = (e) => {
@@ -84,6 +84,6 @@ export const RegisterPage = () => {
         Уже зарегистрированы?&#160;
         <Link to='/login' className={`${styles.register__link}`}>Войти</Link>
       </p>
-  </div>
+    </div>
   )
 }

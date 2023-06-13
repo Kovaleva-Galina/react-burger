@@ -1,9 +1,10 @@
 .profile {
-  display: grid;
+  display: flex;
   gap: 60px;
-  grid-template-columns: 1fr min-content 1fr;
+  max-width: 1240px;
   justify-items: end;
   align-items: start;
+  margin: auto;
 }
 
 .profile__form {

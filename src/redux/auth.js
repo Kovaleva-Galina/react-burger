@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getUser as getUserAction, loginUser, registerUser, updateUser as updateUserAction, logoutUser, codeUser, changePasswordUser} from './actions/user-profile';
+import { getUser as getUserAction, loginUser, registerUser, updateUser as updateUserAction, logoutUser, codeUser, changePasswordUser } from './actions/user-profile';
 
 const AuthContext = createContext(undefined);
 

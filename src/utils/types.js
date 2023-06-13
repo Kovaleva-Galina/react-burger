@@ -12,5 +12,13 @@ export const ingredientType = PropTypes.shape({
   type: PropTypes.oneOf(['bun', 'sauce', 'main']),
 });
 
-
+export const burgerType = PropTypes.shape({
+  price: PropTypes.number,
+  name: PropTypes.string,
+  _id: PropTypes.string.isRequired,
+  status: PropTypes.oneOf(['done', 'created', 'pending']),
+  createdAt: PropTypes.string,
+  updatedAt: PropTypes.string,
+  number: PropTypes.number,
+})
 

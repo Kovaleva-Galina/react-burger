@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import { useSelector } from 'react-redux';
 import styles from './forgot-password.module.css';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
-import { useAuth } from '../services/auth';
+import { useAuth } from '../redux/auth';
 
 
 export const ForgotPasswordPage = () => {
@@ -58,13 +58,13 @@ export const ForgotPasswordPage = () => {
           size="medium"
           disabled={!email.length || codeUserRequest}
         >
-        Восстановить
+          Восстановить
         </Button>
       </form>
       <p className="pt-20 text text_type_main-default">
         Вспомнили пароль?&#160;
         <Link to='/login' className={`${styles.forgot_password__link}`}>Войти</Link>
       </p>
-  </div>
+    </div>
   )
 }
