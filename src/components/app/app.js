@@ -7,22 +7,15 @@ import AppHeader from '../app-header/app-header';
 import { ProvideAuth } from '../../redux/auth';
 import Routing from '../routing/routing';
 import { useDispatch } from 'react-redux';
-import { WS_CONNECTION_START_ALL } from '../../redux/actions/ws-all-actions';
 import { updateIngredients } from '../../redux/actions/ingredients';
-import { WS_CONNECTION_START_ORDERS } from '../../redux/actions/ws-orders-actions';
 
 function App() {
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch({ type: WS_CONNECTION_START_ALL });
-    dispatch({ type: WS_CONNECTION_START_ORDERS });
-  }, []);
-
-  useEffect(() => {
     dispatch(updateIngredients());
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ProvideAuth>

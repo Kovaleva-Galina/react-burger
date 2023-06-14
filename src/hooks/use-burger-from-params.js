@@ -1,7 +1,22 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { wsConnectionStart as wsStartAll, wsConnectionClose as wsCloseAll } from '../redux/actions/ws-all-actions';
+import { wsConnectionStart as wsStartOrder, wsConnectionClose as wsCloseOrder } from '../redux/actions/ws-orders-actions';
 
 const useBurgerFromParams = () => {
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(wsStartAll());
+    dispatch(wsStartOrder());
+    return () => {
+      dispatch(wsCloseAll());
+      dispatch(wsCloseOrder());
+    }
+  }, []);
+
   const { id } = useParams();
   const { pathname } = useLocation();
 
@@ -9,9 +24,9 @@ const useBurgerFromParams = () => {
   const burgerListOrder = useSelector((state) => state.orders.orderList);
 
   if (pathname === `/profile/orders/${id}`) {
-    return burgerListOrder.find(({_id}) => _id === id);
+    return burgerListOrder.find(({ _id }) => _id === id);
   } else if (pathname === `/feed/${id}`) {
-    return burgerListAll.find(({_id}) => _id === id);
+    return burgerListAll.find(({ _id }) => _id === id);
   } return null
 }
 export default (useBurgerFromParams);

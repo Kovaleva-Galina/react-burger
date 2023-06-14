@@ -3,14 +3,13 @@ import styles from './ingredient-preview.module.css';
 
 const IngredientPreview = ({ ingredient, index, count }) => {
 
-  if (index < 4) {
+  if (index < 4 && ingredient) {
     return (
       <li key={index} className={`${styles.ingredient_preview}`} style={{ zIndex: `-${index}` }}>
         <img className={`${styles.ingredient_preview__image} `} src={ingredient.image} alt={ingredient.name} />
       </li>
     )
-  } else if (index === 4) {
-
+  } else if (index === 4 && ingredient) {
     return (
       <li key={index} className={`${styles.ingredient_preview}`} style={{ zIndex: `-${index}` }}>
         <img className={`${styles.ingredient_preview__image} `} src={ingredient.image} alt={ingredient.name} />

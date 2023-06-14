@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { FormattedDate, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -12,9 +12,11 @@ const CardOrder = ({ burger }) => {
 
   const ingredientList = useSelector((state) => state.ingredients.items);
 
-  const ingredients = burger.ingredients.map((id) => ingredientList.find(({ _id }) => _id === id));
+  const ingredients = useMemo(() => {
+    return burger.ingredients.map((id) => ingredientList.find(({ _id }) => _id === id));
+  }, [burger]);
 
-  const burgerPrice = ingredients.reduce((sum, ingredient) => sum + ingredient.price, 0)
+  const burgerPrice = useMemo(() => ingredients.reduce((sum, ingredient) => sum + (ingredient?.price || 0), 0), [ingredients]);
 
   const timeZone = () => {
     if (new Date(burger.createdAt).getTimezoneOffset() < 0) {

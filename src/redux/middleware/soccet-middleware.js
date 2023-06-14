@@ -1,39 +1,51 @@
 import { getCookie } from "../../utils/utils";
+import { updateTokenRequest } from "../../utils/api";
 
-export const socketMiddleware = (wsUrl, prefix) => { // prefix 'ALL'/ 'ORDERS'
+export const socketMiddleware = (wsUrl, actions) => { // prefix 'ALL'/ 'ORDERS'
   return store => {
     let socket = null;
 
     return next => action => {
-      const { dispatch, getState } = store;
-      const { type, payload } = action;
+      const { dispatch } = store;
+      const { type } = action;
+      const { wsInit, wsFinalize, onOpen, onError, wsGetListOrder, wsGetTotalNumber, wsGetTotalTodayNumber, onClose } = actions;
 
-      if (type === `WS_CONNECTION_START_${prefix}`) {
+      if (type === wsFinalize && socket) {
+        socket.close(1000, 'reason');
+        socket = null;
+      }
+
+      if (type === wsInit) {
         // объект класса WebSocket
         socket = new WebSocket(`${wsUrl}?token=${getCookie('access-token')}`);
       }
       if (socket) {
         // функция, которая вызывается при открытии сокета
         socket.onopen = event => {
-          dispatch({ type: `WS_CONNECTION_SUCCESS_${prefix}`, payload: event });
+          dispatch({ type: onOpen, payload: event });
         };
 
         // функция, которая вызывается при ошибке соединения
         socket.onerror = event => {
-          dispatch({ type: `WS_CONNECTION_ERROR_${prefix}`, payload: event });
+          dispatch({ type: onError, payload: event });
         };
 
         // функция, которая вызывается при получении события от сервера
-        socket.onmessage = event => {
+        socket.onmessage = async event => {
           const { data } = event;
-          dispatch({ type: `WS_GET_ORDER_LIST_${prefix}`, payload: JSON.parse(data).orders });
-          dispatch({ type: `WS_UPDATE_TOTAL_NUMBER_${prefix}`, payload: JSON.parse(data).total });
-          dispatch({ type: `WS_UPDATE_TOTAL_TODAY_NUMBER_${prefix}`, payload: JSON.parse(data).totalToday });
+          const parsedData = JSON.parse(data);
+          const { orders, total, totalToday, success, message } = parsedData || {};
+          if (!success && message === 'Invalid or missing token') {
+            await updateTokenRequest();
+          }
+          dispatch({ type: wsGetListOrder, payload: orders });
+          dispatch({ type: wsGetTotalNumber, payload: total });
+          dispatch({ type: wsGetTotalTodayNumber, payload: totalToday });
         };
 
         // функция, которая вызывается при закрытии соединения
         socket.onclose = event => {
-          dispatch({ type: `WS_CONNECTION_CLOSED_${prefix}`, payload: event });
+          dispatch({ type: onClose, payload: event });
         };
       }
       next(action);

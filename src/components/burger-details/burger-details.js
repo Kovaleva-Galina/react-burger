@@ -11,9 +11,23 @@ const BurgerDetails = ({ burger }) => {
 
   if (!burger) return null;
 
-  const ingredients = burger.ingredients.map((id) => ingredientList.find(({ _id }) => _id === id));
+  const ingredientsObj = burger.ingredients.reduce((acc, id) => {
+    if (acc[id]) {
+      acc[id].count += 1;
+    } else {
+      acc[id] = {
+        ingredient: ingredientList.find(({ _id }) => _id === id),
+        count: 1,
+      }
+    }
+    return acc;
+  }, {});
 
-  const burgerPrice = ingredients.reduce((sum, ingredient) => sum + ingredient.price, 0)
+  const ingredients = Object.values(ingredientsObj);
+
+  const burgerPrice = ingredients.reduce((sum, {count, ingredient}) => {
+    return sum + count * ingredient.price;
+  }, 0);
 
   const timeZone = () => {
     if (new Date(burger.createdAt).getTimezoneOffset() < 0) {
@@ -39,8 +53,8 @@ const BurgerDetails = ({ burger }) => {
       <p className={`pb-2 text text_type_main-small ${burger.status === 'done' ? styles.burger_details__text : ''}`}>{translateStatus()}</p>
       <p className="pt-10 pb-2 text text_type_main-medium">Состав:</p>
       <ul className={` ${styles.burger_details__list_ingredients} `}>
-        {ingredients.map((ingredient, index) => (
-          <IngredientItem ingredient={ingredient} index={index} key={index} />
+        {ingredients.map(({ ingredient, count }, index) => (
+          <IngredientItem ingredient={ingredient} key={index} count={count} />
         ))}
       </ul>
       <div className={`pt-10 ${styles.burger_details__about_burger} `}>

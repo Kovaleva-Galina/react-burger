@@ -4,9 +4,18 @@ import styles from './order-statistics.module.css';
 import PropTypes from 'prop-types';
 
 const OrdersStatistics = ({ numbersReady, numberProcessing }) => {
+  const getTotalNumber = (state) => state.ordersAll?.total;
 
-  const totalNumber = useSelector((state) => state.ordersAll?.total);
-  const totalTodayNumber = useSelector((state) => state.ordersAll?.totalToday);
+  const TotalNumber = () => {
+    const totalNumber = useSelector(getTotalNumber)
+    return totalNumber
+  }
+  const getTotalTodayNumber = (state) => state.ordersAll?.totalToday
+
+  const TotalTodayNumber = () => {
+    const totalTodayNumber = useSelector(getTotalTodayNumber)
+    return totalTodayNumber
+  }
 
   return (
     <section className={`${styles.order_statistics} `}>
@@ -33,9 +42,9 @@ const OrdersStatistics = ({ numbersReady, numberProcessing }) => {
         </div>
       </div>
       <p className="pt-15 text text_type_main-medium">Выполнено за все время:</p>
-      <p className="text text_type_digits-large">{totalNumber}</p>
+      <p className="text text_type_digits-large">{TotalNumber()}</p>
       <p className="pt-15 text text_type_main-medium">Выполнено за сегодня:</p>
-      <p className="text text_type_digits-large">{totalTodayNumber}</p>
+      <p className="text text_type_digits-large">{TotalTodayNumber()}</p>
     </section>
   )
 }

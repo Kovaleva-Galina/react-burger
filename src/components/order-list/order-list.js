@@ -6,10 +6,9 @@ import CardOrder from '../card-order/card-order';
 import { burgerType } from '../../utils/types';
 
 const OrderList = ({ orderBurgers }) => {
-
   return (
     <ul className={`pr-2 ${styles.order_list} `}>
-      {orderBurgers.slice().reverse().map((burger) => (
+      {orderBurgers.reverse().map((burger) => (
         <Link className={`${styles.order_list__link}`} to={`${burger._id}`} key={burger.number} state={{ Id: burger._id }} >
           <CardOrder
             burger={burger}

@@ -1,11 +1,22 @@
-import { memo } from 'react';
+import { memo, useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from './orders-history.module.css';
 import OrderList from '../components/order-list/order-list';
+import { wsConnectionStart, wsConnectionClose } from '../redux/actions/ws-orders-actions';
 
 const OrdersHistory = () => {
+
+  const dispatch = useDispatch();
   const orderBurgers = useSelector((state) => state.orders?.orderList);
+
+  useEffect(() => {
+    dispatch(wsConnectionStart())
+    return () => {
+      dispatch(wsConnectionClose())
+    }
+  }, []);
+
 
   if (orderBurgers) {
     return (
