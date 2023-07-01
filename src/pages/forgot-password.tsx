@@ -1,5 +1,5 @@
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useCallback, useState, ChangeEvent } from "react";
+import { useCallback, useState, ChangeEvent, FormEvent } from "react";
 import { useSelector } from '../services/types/hooks';
 import styles from './forgot-password.module.css';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
@@ -16,13 +16,10 @@ export const ForgotPasswordPage = () => {
   }
 
   const confirmEmail = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) : void => {
+    (e: FormEvent<HTMLFormElement>) : void => {
       e.preventDefault();
-      auth.checkingProfile(email).then((data) => {
-        if (data) {
-          navigate('/reset-password')
-        }
-      });
+      auth.checkingProfile(email);
+      navigate('/reset-password');
     },
     [auth, email, navigate]
   );
@@ -42,7 +39,7 @@ export const ForgotPasswordPage = () => {
       <p className="text text_type_main-medium pb-6">
         Восстановление пароля
       </p>
-      <form className={`${styles.forgot_password__form}`} onSubmit={() => confirmEmail}>
+      <form className={`${styles.forgot_password__form}`} onSubmit={confirmEmail}>
         <EmailInput
           onChange={onChange}
           value={email}

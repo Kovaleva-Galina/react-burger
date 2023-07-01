@@ -1,10 +1,9 @@
 import { PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useCallback, useRef, useState, ChangeEvent } from "react";
+import { useCallback, useRef, useState, ChangeEvent, FormEvent } from "react";
 import styles from './reset-password.module.css';
 import { useSelector } from '../services/types/hooks';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { useAuth } from '../services/types/auth';
-import { TUser } from '../services/types/data';
 
 export const ResetPasswordPage = () => {
   const { user, isLoaded } = useAuth();
@@ -24,7 +23,7 @@ export const ResetPasswordPage = () => {
   }
 
   const passwordReset = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
+    (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       auth.changePassword(form).then((data) => {
         if (data) {
@@ -52,7 +51,7 @@ export const ResetPasswordPage = () => {
       <p className="text text_type_main-medium pb-6">
         Восстановление пароля
       </p>
-      <form className={`${styles.reset_password__form}`} onSubmit={() => passwordReset}>
+      <form className={`${styles.reset_password__form}`} onSubmit={passwordReset}>
         <PasswordInput
           value={form.password || ''}
           name={'password'}

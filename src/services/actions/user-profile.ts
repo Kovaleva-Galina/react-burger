@@ -223,14 +223,15 @@ export const registerUser: AppThunk = (form: TForm) => {
 }
 
 export const loginUser: AppThunk = (form: TForm) => {
-  return function (dispatch: AppDispatch) {
+  return function (dispatch) {
     dispatch(loginUserRequest());
     return loginUserProfileRequest(form)
       .then(json => {
         dispatch(loginUserSuccess(json.user));
       })
-      .catch(() => {
+      .catch((e) => {
         dispatch(loginUserFailed());
+        throw e;
       })
   };
 }
@@ -252,9 +253,8 @@ export const codeUser: AppThunk = (email: string) => {
   return function (dispatch: AppDispatch) {
     dispatch(codeUserRequest());
     return codeUserProfileRequest(email)
-      .then(json => {
+      .then(() => {
         dispatch(codeUserSuccess());
-        return json;
       })
       .catch(() => {
         dispatch(codeUserFailed());

@@ -6,7 +6,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../services/types/auth';
 
 export const LoginPage = () => {
-  const userLoginRequest = useSelector((state) => state.userProfile?.userLoginRequest);
+  const { userLoginRequest, user } = useSelector((state) => state.userProfile);
   const { signIn, isLoaded } = useAuth();
 
   const [form, setValue] = useState({ email: '', password: ''});
@@ -23,13 +23,13 @@ export const LoginPage = () => {
       e.preventDefault();
       try {
         await signIn(form);
-        navigate(location.state?.from || '/')
+        navigate(location.state?.from || '/');
       } catch (e) {
         console.error('errr', e);
       }
 
     },
-    [form, signIn, navigate]
+    [form, signIn, navigate, user]
   );
 
   if (!isLoaded) return null;

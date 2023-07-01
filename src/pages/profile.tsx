@@ -1,5 +1,5 @@
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useState, useRef, ChangeEvent } from "react";
+import { useState, useRef, ChangeEvent, FormEvent } from "react";
 import { useSelector } from '../services/types/hooks';
 import styles from './profile.module.css';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ export const Profile = () => {
   const userUpdateRequest = useSelector((state) => state.userProfile?.userUpdateRequest);
   const { user, updateUser } = useAuth();
   const [form, setForm] = useState<TForm>({
-    name: `${user?.email}`,
+    name: `${user?.name}`,
     email: `${user?.email}`,
     password: ''
   });
@@ -29,6 +29,7 @@ export const Profile = () => {
   const onIconClick = () => {
       setTimeout(() => inputRef.current?.focus(), 0)
   }
+  
   const onChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setForm((oldForm) => ({ ...oldForm, [e.target.name]: e.target.value }));
   }
@@ -41,7 +42,7 @@ export const Profile = () => {
     }
   }
 
-  const onSubmit = (e: ChangeEvent<HTMLInputElement>): void => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     updateUser({
       name: form?.name,
@@ -53,7 +54,7 @@ export const Profile = () => {
   const resetUpdate = (e: ChangeEvent<HTMLInputElement>): void => {
     e.preventDefault();
     setForm({
-      name: `${user?.email}`,
+      name: `${user?.name}`,
       email: `${user?.email}`,
       password: ''
     });
@@ -83,15 +84,15 @@ export const Profile = () => {
         >
           <p className='text text_type_main-medium'>История заказов</p>
         </Link>
-        <Button htmlType="button" type="primary" size="medium" className={`${styles.profile__link} ${current === 'exit' ? styles.link_type_current : ''}`} onClick={onLogout}>
+        <button  className={`${styles.profile__button_exit} ${current === 'exit' ? styles.link_type_current : ''}`} onClick={onLogout}>
           <p className='text text_type_main-medium'>Выход</p>
-        </Button>
+        </button>
         <p className='pt-20 text text_type_main-default text_color_inactive'>В этом разделе вы можете просмотреть свою историю заказов</p>
       </div>
 
     {pathname === '/profile'
     ? (
-      <form className={`pt-30 ${styles.profile__form}`} onSubmit={() => onSubmit}>
+      <form className={`pt-30 ${styles.profile__form}`} onSubmit={onSubmit}>
         <Input
           type={'text'}
           placeholder={'Имя'}

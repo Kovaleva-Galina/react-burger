@@ -121,14 +121,15 @@ export const getUserProfileRequest = async (): Promise<{ user: TUser }> => {
   });
 }
 
-export const passwordChangeUserProfileRequest = async (form: TForm): Promise<any> => {
+export const passwordChangeUserProfileRequest = async (form: TForm) => {
   return fetch((`${BASE_URL}/password-reset/reset`),  {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(form)
-  });
+  })
+  .then(checkResponse)
 };
 
 export const logoutUserProfileRequest = async () => {

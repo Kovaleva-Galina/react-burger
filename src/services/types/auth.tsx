@@ -11,8 +11,8 @@ interface IAuthContext {
   signUp: (form: TForm) => Promise<any>;
   checkingProfile: (email: string) => Promise<any>;
   changePassword: (form: TUser) => Promise<any>;
-  signOut: () => Promise<any>;
-  updateUser: (form: TForm) => Promise<any>;
+  signOut: () => Promise<void>;
+  updateUser: (form: TForm) => Promise<void>;
 }
 
 const AuthContext = createContext<IAuthContext>({
@@ -28,10 +28,10 @@ const AuthContext = createContext<IAuthContext>({
 });
 
 export interface IProvideAuthProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
-export function ProvideAuth({ children }: IProvideAuthProps) {
+export const ProvideAuth: React.FC<IProvideAuthProps> = ({ children }) => {
   const auth = useProvideAuth();
 
   useEffect(() => {
