@@ -49,15 +49,3 @@ export type TIngredientWithCountRequired = {
   count: number;
   ingredient: TIngredient;
 }
-
-
-// export type TActions = {
-//   readonly onClose : string;
-//   readonly onError : string;
-//   readonly onOpen : string;
-//   readonly wsFinalize : string;
-//   readonly wsGetListOrder : string;
-//   readonly wsGetTotalNumber : string;
-//   readonly wsGetTotalTodayNumber : string;
-//   readonly wsInit : string;
-// }

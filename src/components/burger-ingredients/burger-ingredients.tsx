@@ -26,7 +26,7 @@ const BurgerIngredients = () => {
   const sauce = positions.filter((item: TIngredient) => item.type === Refs.sauce);
   const main = positions.filter((item: TIngredient) => item.type === Refs.main);
 
-  const refContainer =  useRef<HTMLUListElement | null>(null);
+  const refContainer =  useRef<HTMLUListElement>(null);
 
   const refTitle = useRef({ [Refs.bun]: createRef<HTMLDivElement>(), [Refs.sauce]: createRef<HTMLDivElement>(), [Refs.main]: createRef<HTMLDivElement>() });
 

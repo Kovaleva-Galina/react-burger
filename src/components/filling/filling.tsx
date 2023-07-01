@@ -12,7 +12,7 @@ type TFillingProps = {
   index: number,
 }
 
-const Filling: FC<TFillingProps> = ({ item, onDelete = () => {}, type = 'filling-item' , onDrop = () => {}, index}) => {
+const Filling: FC<TFillingProps> = ({ item, onDelete, type = 'filling-item' , onDrop, index}) => {
 
   const ref = useRef(null);
 
@@ -24,7 +24,7 @@ const Filling: FC<TFillingProps> = ({ item, onDelete = () => {}, type = 'filling
   const [, dropRef] = useDrop({
     accept: type,
     drop(item: TIngredient) {
-      onDrop(item, index);
+      onDrop?.(item, index);
     },
   });
 
@@ -40,7 +40,7 @@ const Filling: FC<TFillingProps> = ({ item, onDelete = () => {}, type = 'filling
         text={item.name}
         price={item.price}
         thumbnail={item.image}
-        handleClose = {() => {onDelete(index)}}
+        handleClose = {() => {onDelete?.(index)}}
       />
   </li>
   )

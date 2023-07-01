@@ -1,8 +1,53 @@
-import { TUser, TForm } from "../services/types/data";
+import { TUser, TForm, TOrder, TIngredient } from "../services/types/data";
 import { getCookie, setCookie } from "./utils";
 export const BASE_URL = 'https://norma.nomoreparties.space/api';
 
-const checkResponse = (res : Response) => {
+type TServerResponse<T> = {
+  success: boolean;
+} & T;
+
+type TIngredientsResponse = TServerResponse<{
+  data: TIngredient[];
+}>;
+
+type TOrderResponse = TServerResponse<{
+  order: TOrder;
+}>;
+
+type TLoginUserProfileResponse = TServerResponse<{
+  user: TUser;
+  refreshToken: string;
+  accessToken: string;
+}>
+
+type TRegisterUserProfileResponse = TServerResponse<{
+  user: TUser;
+  refreshToken: string;
+  accessToken: string;
+}>
+
+type TCodeUserProfileResponse = TServerResponse<{}>;
+
+type TUpdateTokenResponse = TServerResponse<{
+  refreshToken: string;
+  accessToken: string;
+}>;
+
+type TGetUserProfileResponse = TServerResponse<{
+  user: TUser;
+}>
+
+type TPasswordChangeUserProfileResponse = TServerResponse<{
+  message: string;
+}>
+
+type TLogoutUserProfileResponse = TServerResponse<{}>;
+
+type TUpdateUserProfileRequestResponse = TServerResponse<{
+  user: TUser;
+}>
+
+const checkResponse = <T>(res : Response): Promise<T> => {
   return res.ok ? res.json() : res.json().then((err: string) => Promise.reject(err));
 };
 
@@ -17,11 +62,11 @@ export const fetchOrder = (keysNumbers: string[]) => {
       Authorization: 'Bearer ' + getCookie('access-token')
     },
   })
-  .then(checkResponse)
+  .then((res) => checkResponse<TOrderResponse>(res))
 }
 
 export const fetchIngredients = () => {
-  return fetch(`${BASE_URL}/ingredients`).then(checkResponse)
+  return fetch(`${BASE_URL}/ingredients`).then((res) => checkResponse<TIngredientsResponse>(res))
 }
 
 export const loginUserProfileRequest = async (form: TForm) => {
@@ -32,7 +77,7 @@ export const loginUserProfileRequest = async (form: TForm) => {
     },
     body: JSON.stringify(form)
   })
-  .then(checkResponse)
+  .then((res) => checkResponse<TLoginUserProfileResponse>(res))
   .then((data) => {
     const { accessToken, refreshToken } = data;
     if (accessToken) {
@@ -53,7 +98,7 @@ export const registerUserProfileRequest = async (form: TForm) => {
     },
     body: JSON.stringify(form)
   })
-  .then(checkResponse)
+  .then((res) => checkResponse<TRegisterUserProfileResponse>(res))
   .then((data) => {
     const { accessToken, refreshToken } = data;
     if (accessToken) {
@@ -76,6 +121,7 @@ export const codeUserProfileRequest = async (email: string) => {
       'email' : email
     })
   })
+  .then((res) => checkResponse<TCodeUserProfileResponse>(res))
 };
 
 export const updateTokenRequest = async () => {
@@ -88,7 +134,7 @@ export const updateTokenRequest = async () => {
       "token": getCookie('refresh-token')
     })
   })
-  .then(checkResponse)
+  .then((res) => checkResponse<TUpdateTokenResponse>(res))
   .then((data) => {
     const { accessToken, refreshToken } = data;
     if (accessToken) {
@@ -101,7 +147,7 @@ export const updateTokenRequest = async () => {
 };
 
 //Запрос на получение данный о пользователе
-export const getUserProfileRequest = async (): Promise<{ user: TUser }> => {
+export const getUserProfileRequest = async (): Promise<TGetUserProfileResponse> => {
   return fetch((`${BASE_URL}/auth/user`), {
     method: 'GET',
     headers: {
@@ -129,7 +175,7 @@ export const passwordChangeUserProfileRequest = async (form: TForm) => {
     },
     body: JSON.stringify(form)
   })
-  .then(checkResponse)
+  .then((res) => checkResponse<TPasswordChangeUserProfileResponse>(res))
 };
 
 export const logoutUserProfileRequest = async () => {
@@ -142,7 +188,7 @@ export const logoutUserProfileRequest = async () => {
       "token": getCookie('refresh-token')
     })
   })
-  .then(checkResponse)
+  .then((res) => checkResponse<TLogoutUserProfileResponse>(res))
 };
 
 //Обновление данных пользователя
@@ -155,4 +201,4 @@ export const updateUserProfileRequest = async (form: TForm) =>
     },
     body: JSON.stringify(form),
   })
-  .then(checkResponse)
+  .then((res) => checkResponse<TUpdateUserProfileRequestResponse>(res))

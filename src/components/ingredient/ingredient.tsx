@@ -7,11 +7,11 @@ import { TIngredient } from '../../services/types/data';
 
 type TIngredientProps = {
   ingredient: TIngredient,
-  onClick: () => {},
+  onClick: (ingredient : TIngredient) => void,
   type: string
 }
 
-const Ingredient: FC<TIngredientProps> = ({ ingredient, onClick = (ingredient: TIngredient) => { }, type }) => {
+const Ingredient: FC<TIngredientProps> = ({ ingredient, onClick, type }) => {
   const selected = useSelector((state) => {
     return type === 'bun'
       ? state.burgerConstructor.selectedBuns

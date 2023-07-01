@@ -6,7 +6,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../services/types/auth';
 
 export const LoginPage = () => {
-  const { userLoginRequest, user } = useSelector((state) => state.userProfile);
+  const { userLoginRequest } = useSelector((state) => state.userProfile);
   const { signIn, isLoaded } = useAuth();
 
   const [form, setValue] = useState({ email: '', password: ''});
@@ -14,23 +14,19 @@ export const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const onChange = (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
-    setValue({ ...form, [e.target.name]: e.target.value });
+  const onChange = useCallback((e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+    setValue((value) => ({ ...value, [e.target.name]: e.target.value }));
+  }, []);
+
+  const login = async (e: FormEvent<HTMLFormElement>)  => {
+    e.preventDefault();
+    try {
+      await signIn(form);
+      navigate(location.state?.from || '/');
+    } catch (e) {
+      console.error('errr', e);
+    }
   };
-
-  const login = useCallback(
-    async (e: FormEvent<HTMLFormElement>)  => {
-      e.preventDefault();
-      try {
-        await signIn(form);
-        navigate(location.state?.from || '/');
-      } catch (e) {
-        console.error('errr', e);
-      }
-
-    },
-    [form, signIn, navigate, user]
-  );
 
   if (!isLoaded) return null;
 

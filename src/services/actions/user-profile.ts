@@ -151,13 +151,12 @@ export interface IPasswordChangeUserFailedAction {
 
 export interface IPasswordChangeUserSuccessAction {
   readonly type: typeof PASSWORD_CHANGE_USER_SUCCESS;
-  readonly user: TUser;
 }
 
 //Запрос на смену пароля
 export const passwordChangeUserRequest = (): IPasswordChangeUserRequestAction => ({ type: PASSWORD_CHANGE_USER_REQUEST });
 export const passwordChangeUserFailed = (): IPasswordChangeUserFailedAction => ({ type: PASSWORD_CHANGE_USER_FAILED });
-export const passwordChangeUserSuccess = (user: TUser): IPasswordChangeUserSuccessAction => ({ type: PASSWORD_CHANGE_USER_SUCCESS, user });
+export const passwordChangeUserSuccess = (): IPasswordChangeUserSuccessAction => ({ type: PASSWORD_CHANGE_USER_SUCCESS });
 
 export type TUserActions =
   | IGetUserRequestAction
@@ -265,9 +264,8 @@ export const codeUser: AppThunk = (email: string) => {
 export const changePasswordUser: AppThunk = (form: TForm) => (dispatch: AppDispatch) => {
   dispatch(passwordChangeUserRequest());
   return passwordChangeUserProfileRequest(form)
-    .then((json) => {
-      dispatch(passwordChangeUserSuccess(json));
-      return json;
+    .then(() => {
+      dispatch(passwordChangeUserSuccess());
     })
     .catch(() => {
       dispatch(passwordChangeUserFailed());

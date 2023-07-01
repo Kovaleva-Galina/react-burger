@@ -36,6 +36,8 @@ export const ProvideAuth: React.FC<IProvideAuthProps> = ({ children }) => {
 
   useEffect(() => {
     auth.getUser();
+    // prevent refetch user on change auth
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
@@ -45,7 +47,7 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
-export function useProvideAuth(): IAuthContext {
+export function useProvideAuth() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.userProfile);
   const { isLoaded } = useSelector((state) => state.userProfile);

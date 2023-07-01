@@ -142,7 +142,7 @@ export const userProfileReducer = (state = userProfileState, action: TUserAction
       return { ...state, passwordChangeUserRequest: true };
     }
     case PASSWORD_CHANGE_USER_SUCCESS: {
-      return { ...state, passwordChangeUserFailed: false, passwordChangeUserRequest: false, user: action.user, isLoaded: true };
+      return { ...state, passwordChangeUserFailed: false, passwordChangeUserRequest: false, isLoaded: true };
     }
     case PASSWORD_CHANGE_USER_FAILED: {
       return { ...state, passwordChangeUserFailed: true };

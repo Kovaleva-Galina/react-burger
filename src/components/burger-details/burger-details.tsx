@@ -6,7 +6,7 @@ import IngredientItem from '../ingredient-item/ingredient-item';
 import { TOrder, TIngredientWithCount, TIngredientWithCountRequired } from '../../services/types/data';
 
 type TBurgerProps = {
-  burger: TOrder | null | undefined,
+  burger?: TOrder | null,
 }
 
 type TAcc = {
