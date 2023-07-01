@@ -1,6 +1,6 @@
 import App from './components/app/app';
 import { createRoot } from 'react-dom/client';
-import { store } from './services/reducers/index';
+import { store } from './redux/store';
 import { Provider } from 'react-redux';
 
 const container = document.getElementById('root');

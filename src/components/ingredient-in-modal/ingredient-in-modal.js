@@ -5,6 +5,7 @@ import Modal from "../modal/modal";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
 const IngredientInModal = () => {
+
   const ingredient = useIngredientFromParams();
 
   const navigate = useNavigate();
@@ -17,7 +18,6 @@ const IngredientInModal = () => {
     </Modal>
   )
 }
-
 
 export default memo(IngredientInModal);
 

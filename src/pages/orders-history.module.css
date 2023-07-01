@@ -1,0 +1,9 @@
+.orders_history {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  justify-content: center;
+  height: calc(100vh - 180px);
+  align-items: center;
+  width: 100%
+}

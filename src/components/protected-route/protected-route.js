@@ -1,4 +1,4 @@
-import { useAuth } from '../../services/auth';
+import { useAuth } from '../../redux/auth';
 import { Navigate, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -10,7 +10,7 @@ export const ProtectedRouteElement = ({ element }) => {
     return null;
   }
 
-  return user ? element : <Navigate to="/login" state={{ from: location.pathname }}/>;
+  return user ? element : <Navigate to="/login" state={{ from: location.pathname }} />;
 }
 
 ProtectedRouteElement.propTypes = {

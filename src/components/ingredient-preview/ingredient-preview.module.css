@@ -1,0 +1,32 @@
+.ingredient_preview {
+  height: 64px;
+  width: 64px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #801AB2, #4C4CFF);
+  margin-left: -20px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.ingredient_preview__image {
+  background-color: black;
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  object-fit: cover;
+}
+
+.ingredient_preview__text {
+  position: absolute;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  top: 0px;
+  justify-content: center;
+  align-items: center
+}

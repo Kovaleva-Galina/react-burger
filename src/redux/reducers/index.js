@@ -1,18 +1,19 @@
-import {legacy_createStore as createStore, combineReducers, applyMiddleware} from 'redux';
+import { combineReducers } from 'redux';
 import { ingredientsReducer } from './ingredients';
 import { burgerConstructorReducer } from './burger-constructor';
 import { detailsIngredientReducer } from './detail-ingredient';
-import { composeWithDevTools } from "redux-devtools-extension";
 import { userProfileReducer } from './user-profile';
 import { orderNumberReducer } from './order';
-import thunk from 'redux-thunk';
+import { wsAllReducer } from './ws-all-reducer';
+import { wsOrdersReducer } from './ws-orders-reducer';
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
   burgerConstructor: burgerConstructorReducer,
   detailIngredient: detailsIngredientReducer,
   orderNumber: orderNumberReducer,
-  userProfile: userProfileReducer
+  userProfile: userProfileReducer,
+  ordersAll: wsAllReducer,
+  orders: wsOrdersReducer
 })
 
-export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));

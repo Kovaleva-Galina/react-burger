@@ -1,9 +1,9 @@
 import { PasswordInput, Button, Input } from '@ya.praktikum/react-developer-burger-ui-components'
-import { useCallback, useRef, useState} from "react";
+import { useCallback, useRef, useState } from "react";
 import styles from './reset-password.module.css';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate, Navigate } from 'react-router-dom';
-import { useAuth } from '../services/auth';
+import { useAuth } from '../redux/auth';
 
 export const ResetPasswordPage = () => {
   const { user, isUserLoaded } = useAuth();
@@ -77,7 +77,7 @@ export const ResetPasswordPage = () => {
           htmlType="submit"
           type="primary"
           size="medium"
-          disabled={ passwordChangeUserRequest }
+          disabled={passwordChangeUserRequest}
         >
           Сохранить
         </Button>
@@ -86,6 +86,6 @@ export const ResetPasswordPage = () => {
         Вспомнили пароль?&#160;
         <Link to='/login' className={`${styles.reset_password__link}`}>Войти</Link>
       </p>
-  </div>
+    </div>
   )
 }

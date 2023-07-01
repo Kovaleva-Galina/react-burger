@@ -21,13 +21,13 @@ export const orderNumberReducer = (state = orderInitialState, action) => {
       };
     }
     case GET_ORDER_SUCCESS: {
-      return {...state, orderNumberFailed: false, orderNumberRequest: false, orderNumber: { ...action.payload }};
+      return { ...state, orderNumberFailed: false, orderNumberRequest: false, orderNumber: action.payload };
     }
     case GET_ORDER_FAILED: {
       return { ...state, orderNumberFailed: true, orderNumberRequest: false };
     }
     case DELETE_ORDER: {
-      return {...state, orderNumber: null}
+      return { ...state, orderNumber: null }
     }
     default:
       return state;
